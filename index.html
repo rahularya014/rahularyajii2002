@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rahul Arya — Economics × Data × AI</title>
+    <meta name="description" content="Rahul Arya's portfolio covering economics, machine learning, data analytics, credit risk modelling, and AI.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- React & ReactDOM -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+    
+    <!-- Babel for JSX -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <!-- Framer Motion -->
+    <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        background: '#070707',
+                        surface: '#0c0c0c',
+                        surfaceHover: '#141414',
+                        borderSubtle: 'rgba(255, 255, 255, 0.06)',
+                        borderHover: 'rgba(255, 255, 255, 0.12)',
+                        textPrimary: '#ffffff',
+                        textSecondary: '#a1a1aa',
+                        textTertiary: '#71717a',
+                        accent: '#ff2a5f',
+                        accentMuted: 'rgba(255, 42, 95, 0.2)',
+                    },
+                    letterSpacing: {
+                        tighter: '-0.04em',
+                        tight: '-0.02em',
+                    },
+                    animation: {
+                        'breathe-slow': 'breathe 20s ease-in-out infinite',
+                        'float-slow': 'float 12s ease-in-out infinite',
+                        'pulse-glow': 'pulseGlow 4s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        breathe: {
+                            '0%, 100%': { transform: 'scale(1) translate(0, 0)', opacity: 0.5 },
+                            '50%': { transform: 'scale(1.1) translate(2%, 3%)', opacity: 0.8 },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        pulseGlow: {
+                            '0%, 100%': { opacity: 0.6 },
+                            '50%': { opacity: 1 },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #070707;
+            color: #ffffff;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* Subtle Noise Overlay */
+        .bg-noise {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 50;
+            opacity: 0.025;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        /* Atmospheric Glow Layers */
+        .glow-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .glow-layer-1 {
+            position: absolute;
+            width: 120vw;
+            height: 120vh;
+            background: radial-gradient(ellipse at 50% 30%, rgba(255, 30, 80, 0.12), transparent 60%);
+            filter: blur(80px);
+            mix-blend-mode: screen;
+        }
+
+        .glow-layer-2 {
+            position: absolute;
+            width: 80vw;
+            height: 80vh;
+            background: radial-gradient(circle at 50% 40%, rgba(150, 20, 100, 0.08), transparent 50%);
+            filter: blur(60px);
+        }
+        
+        .glow-layer-3 {
+            position: absolute;
+            top: -20%;
+            left: 10%;
+            width: 60vw;
+            height: 60vh;
+            background: radial-gradient(circle, rgba(60, 20, 150, 0.05), transparent 60%);
+            filter: blur(100px);
+        }
+
+        /* Glass UI Utilities */
+        .glass-panel {
+            background: rgba(12, 12, 12, 0.65);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            box-shadow: 0 24px 48px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        }
+
+        .premium-card {
+            background: #0c0c0c;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .premium-card:hover {
+            background: #121212;
+            border-color: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(0,0,0,0.4), 0 0 20px rgba(255, 42, 95, 0.05);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #070707;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #222;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #333;
+        }
+
+        /* Text Utilities */
+        .text-gradient {
+            background: linear-gradient(to right, #ffffff, #a1a1aa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        /* Hide scrollbar for command palette */
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useRef, useMemo } = React;
+        const { motion, AnimatePresence, useScroll, useTransform } = window.Motion;
+
+        // --- DATA STRUCTURE ---
+        const CV_DATA = {
+            personal: {
+                name: "Rahul Arya",
+                role: "Economics × Data × Machine Learning × AI",
+                summary: "Economics postgraduate specializing in machine learning, credit risk modelling, statistical analysis, and AI automation. Building data-driven solutions for complex financial and operational problems.",
+                email: "rahularyajii2002@gmail.com",
+                phone: "+91-8271661801",
+                linkedin: "#", // Add real URL here
+                github: "#" // Add real URL here
+            },
+            experience: [
+                {
+                    id: "exp1",
+                    role: "Credit Risk Modelling Intern",
+                    company: "Central Bank of India",
+                    year: "2025",
+                    details: [
+                        "Developed expertise in credit risk modeling using ML, leveraging banking domain knowledge across NPA, DPD, loan types, OSP, PAR, and delinquency levels.",
+                        "Performed comprehensive data preprocessing and feature engineering including missing/invalid-value treatment, dataset merging, categorical/ordinal encoding, Chi-square, VIF, and ANOVA.",
+                        "Built and compared Random Forest, Decision Tree, and XGBoost models for multi-class classification (P1-P4 risk categories) and tuned XGBoost using GridSearchCV.",
+                        "Achieved 71% classification accuracy, evaluating Precision, Recall, and F1-score across risk classes in alignment with Basel III guidelines."
+                    ],
+                    tags: ["Credit Risk", "XGBoost", "Feature Engineering", "Banking"]
+                },
+                {
+                    id: "exp2",
+                    role: "Product Manager & Marketing Intern",
+                    company: "Beyondriffs",
+                    year: "2024",
+                    details: [
+                        "Led a highly successful initiative that boosted engagement by 18%, working closely with marketing to prioritize product development.",
+                        "Enhanced overall efficiency via roadmap refinement, strong teamwork, and 250+ user research & data-driven, smarter product decisions."
+                    ],
+                    tags: ["Product Management", "Data-Driven Decisions", "User Research"]
+                }
+            ],
+            projects: [
+                {
+                    id: "proj1",
+                    title: "Credit Card Fraud Detection",
+                    instructor: "Prof. Basanti Kumari Nayak",
+                    year: "2025",
+                    metrics: [
+                        { value: "0.96", label: "ROC-AUC" },
+                        { value: "227K+", label: "Records" }
+                    ],
+                    description: "Designed and trained an unsupervised deep learning Autoencoder to model normal behavior and detect fraudulent anomalies using reconstruction error.",
+                    details: "Built a StandardScaler preprocessing pipeline and trained the Autoencoder for 100 epochs using batch-based optimization to learn legitimate transaction patterns and identify abnormal transactions.",
+                    tags: ["Deep Learning", "Autoencoder", "Anomaly Detection"]
+                },
+                {
+                    id: "proj2",
+                    title: "Predicting Farmers Income in India",
+                    instructor: "Asst. Prof. Rachit Saini",
+                    year: "2025",
+                    metrics: [
+                        { value: "0.7513", label: "R² Score" },
+                        { value: "48K+", label: "Records" }
+                    ],
+                    description: "Developed an end-to-end ML pipeline integrating demographic, agricultural, socioeconomic, and geographic data.",
+                    details: "Built a 75:25 XGBoost-LightGBM weighted ensemble, incorporating Ridge as a base learner. Created a deployment-ready inference pipeline with serialized models, target encoding, and land-income interaction features.",
+                    tags: ["XGBoost", "Ensemble Methods", "ML Pipeline", "Feature Eng"]
+                },
+                {
+                    id: "proj3",
+                    title: "Offer Engagement Forecasting Model",
+                    instructor: "Amex Campus Challenge",
+                    year: "2025",
+                    metrics: [
+                        { value: "0.82", label: "AUC" },
+                        { value: "78%", label: "Precision" }
+                    ],
+                    description: "Built 400+ behavioral, transactional, temporal, and offer-level attributes to forecast engagement.",
+                    details: "Trained CatBoost, XGBoost & LightGBM models. Handled severe class imbalance with SMOTE and class-weighting. Introduced Click Momentum and adaptive time-decay, delivering 15% higher efficacy.",
+                    tags: ["CatBoost", "SMOTE", "Time-Series Features"]
+                },
+                {
+                    id: "proj4",
+                    title: "AI-Powered Supply Chain Analytics",
+                    instructor: "Asst. Prof. Rachit Saini",
+                    year: "2025",
+                    metrics: [
+                        { value: "OAuth", label: "Secured" },
+                        { value: "n8n", label: "Automated" }
+                    ],
+                    description: "Developed an event-driven automation pipeline for supply-chain decision making.",
+                    details: "Used n8n, Supabase/PostgreSQL, and Gmail API. Leveraged Quadratic AI for KPI computation and dynamically generating SQL queries to accelerate insights.",
+                    tags: ["AI Agents", "n8n", "PostgreSQL", "Quadratic AI"]
+                }
+            ],
+            education: [
+                {
+                    degree: "M.A. Economics",
+                    institution: "Delhi School of Economics, University of Delhi",
+                    year: "2024–2026",
+                    score: "6.063 CGPA"
+                },
+                {
+                    degree: "B.A. (H) Economics",
+                    institution: "Satyawati College, University of Delhi",
+                    year: "2020–2023",
+                    score: "7.378 CGPA"
+                },
+                {
+                    degree: "Class XII (CBSE)",
+                    institution: "Millia Convent English School, Purnia",
+                    year: "2020",
+                    score: "80.20%"
+                },
+                {
+                    degree: "Class X (CBSE)",
+                    institution: "Millia Convent English School, Purnia",
+                    year: "2018",
+                    score: "76.40%"
+                }
+            ],
+            achievements: [
+                { title: "AMEX Campus Challenge", rank: "AIR 422", desc: "Offer Engagement Forecasting Model" },
+                { title: "IIT Delhi M.Sc. Economics", rank: "AIR 66", desc: "Demonstrated strong analytical skills" },
+                { title: "Case Competitions", rank: "Round 2", desc: "Kepler Cannon & Accenture" },
+                { title: "Hackathons & Events", rank: "Finalist", desc: "Pan-IIT AI/ML (IITG), IIM Calcutta Trilytics'25, Tata Imagination Challenge" }
+            ],
+            skills: {
+                Programming: ["Python", "SQL", "PySpark", "SAS", "MATLAB", "Advanced Excel"],
+                Analytics: ["Power BI", "Statistical Modeling", "Data Mining", "Credit Risk Analysis", "Decision Trees"],
+                AI_ML: ["Machine Learning", "Deep Learning", "Generative AI & LLMs", "Agentic AI", "NLP & Transformers", "Prompt Engineering", "Image Processing"],
+                Cloud_Data: ["Hadoop", "AWS"]
+            },
+            certifications: [
+                "Career Essentials in Data Analysis (Microsoft & LinkedIn)",
+                "Analysing and Visualizing Data with Microsoft Power BI",
+                "MySQL 5.6 Database Administrator",
+                "Python for Beginners"
+            ]
+        };
+
+        // --- ICONS (Lucide mapped) ---
+        const Icons = {
+            Search: () => <i data-lucide="search" className="w-4 h-4"></i>,
+            Command: () => <i data-lucide="command" className="w-4 h-4"></i>,
+            Briefcase: () => <i data-lucide="briefcase" className="w-5 h-5 text-textSecondary"></i>,
+            GraduationCap: () => <i data-lucide="graduation-cap" className="w-5 h-5 text-textSecondary"></i>,
+            Award: () => <i data-lucide="award" className="w-5 h-5 text-textSecondary"></i>,
+            Code: () => <i data-lucide="code" className="w-5 h-5 text-textSecondary"></i>,
+            Mail: () => <i data-lucide="mail" className="w-4 h-4"></i>,
+            Phone: () => <i data-lucide="phone" className="w-4 h-4"></i>,
+            ExternalLink: () => <i data-lucide="external-link" className="w-4 h-4"></i>,
+            ArrowRight: () => <i data-lucide="arrow-right" className="w-4 h-4"></i>,
+            FileText: () => <i data-lucide="file-text" className="w-4 h-4"></i>,
+            Check: () => <i data-lucide="check" className="w-4 h-4"></i>,
+            ChevronRight: () => <i data-lucide="chevron-right" className="w-4 h-4"></i>,
+            X: () => <i data-lucide="x" className="w-4 h-4"></i>,
+            TerminalSquare: () => <i data-lucide="terminal-square" className="w-5 h-5 text-textSecondary"></i>
+        };
+
+        // --- COMPONENTS ---
+
+        const BackgroundEffects = () => {
+            const [mousePos, setMousePos] = useState({ x: -1000, y: -1000 });
+            
+            useEffect(() => {
+                const handleMouseMove = (e) => {
+                    // Only update on desktop for performance
+                    if(window.innerWidth > 768) {
+                        setMousePos({ x: e.clientX, y: e.clientY });
+                    }
+                };
+                window.addEventListener('mousemove', handleMouseMove);
+                return () => window.removeEventListener('mousemove', handleMouseMove);
+            }, []);
+
+            return (
+                <>
+                    <div className="bg-noise"></div>
+                    <div className="glow-container animate-breathe-slow">
+                        <div className="glow-layer-1"></div>
+                        <div className="glow-layer-2"></div>
+                        <div className="glow-layer-3"></div>
+                    </div>
+                    {/* Mouse Spotlight */}
+                    <div 
+                        className="fixed inset-0 pointer-events-none z-10 transition-opacity duration-300 hidden md:block"
+                        style={{
+                            background: `radial-gradient(400px circle at ${mousePos.x}px ${mousePos.y}px, rgba(255, 42, 95, 0.04), transparent 80%)`
+                        }}
+                    ></div>
+                </>
+            );
+        };
+
+        const SectionHeader = ({ title, subtitle }) => (
+            <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                className="mb-12 md:mb-16"
+            >
+                <h2 className="text-3xl md:text-4xl font-bold tracking-tighter text-white mb-3">{title}</h2>
+                {subtitle && <p className="text-textSecondary text-lg md:text-xl">{subtitle}</p>}
+            </motion.div>
+        );
+
+        const CommandPalette = ({ isOpen, onClose }) => {
+            const [search, setSearch] = useState("");
+            
+            useEffect(() => {
+                const handleKeyDown = (e) => {
+                    if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
+                        e.preventDefault();
+                        isOpen ? onClose() : onClose(true); // Toggle logic handled in parent, this acts as request
+                    }
+                    if (e.key === 'Escape' && isOpen) {
+                        onClose();
+                    }
+                };
+                window.addEventListener('keydown', handleKeyDown);
+                return () => window.removeEventListener('keydown', handleKeyDown);
+            }, [isOpen, onClose]);
+
+            // Simple search logic
+            const filteredProjects = CV_DATA.projects.filter(p => 
+                p.title.toLowerCase().includes(search.toLowerCase()) || 
+                p.tags.some(t => t.toLowerCase().includes(search.toLowerCase()))
+            );
+            
+            const allSkills = Object.values(CV_DATA.skills).flat();
+            const filteredSkills = allSkills.filter(s => s.toLowerCase().includes(search.toLowerCase()));
+
+            if (!isOpen) return null;
+
+            return (
+                <AnimatePresence>
+                    {isOpen && (
+                        <>
+                            <motion.div 
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                                transition={{ duration: 0.2 }}
+                                className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50"
+                                onClick={onClose}
+                            />
+                            <div className="fixed inset-0 z-50 flex items-start justify-center pt-[20vh] px-4 pointer-events-none">
+                                <motion.div 
+                                    initial={{ opacity: 0, scale: 0.95, y: -10 }}
+                                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                                    exit={{ opacity: 0, scale: 0.95, y: -10 }}
+                                    transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                                    className="w-full max-w-2xl glass-panel rounded-2xl overflow-hidden pointer-events-auto shadow-2xl flex flex-col"
+                                    onClick={e => e.stopPropagation()}
+                                >
+                                    <div className="flex items-center px-4 py-3 border-b border-white/5">
+                                        <Icons.Search />
+                                        <input 
+                                            type="text" 
+                                            placeholder="Search projects, skills, experience..." 
+                                            className="w-full bg-transparent border-none outline-none text-white px-3 py-2 text-lg placeholder:text-textTertiary"
+                                            value={search}
+                                            onChange={e => setSearch(e.target.value)}
+                                            autoFocus
+                                        />
+                                        <div className="flex items-center gap-1 text-xs text-textTertiary bg-white/5 px-2 py-1 rounded">
+                                            <span>ESC</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div className="max-h-[60vh] overflow-y-auto hide-scrollbar p-2">
+                                        {search === "" ? (
+                                            <div className="p-4 text-sm text-textTertiary">
+                                                <div className="mb-2 uppercase tracking-widest text-[10px] font-semibold">Navigation</div>
+                                                {['About', 'Experience', 'Projects', 'Skills', 'Contact'].map(item => (
+                                                    <a 
+                                                        key={item}
+                                                        href={`#${item.toLowerCase()}`}
+                                                        onClick={onClose}
+                                                        className="flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition-colors text-textSecondary hover:text-white"
+                                                    >
+                                                        <Icons.ChevronRight />
+                                                        Go to {item}
+                                                    </a>
+                                                ))}
+                                            </div>
+                                        ) : (
+                                            <div className="p-2 space-y-4">
+                                                {filteredProjects.length > 0 && (
+                                                    <div>
+                                                        <div className="px-3 pb-2 pt-1 text-xs font-semibold text-textTertiary uppercase tracking-wider">Projects</div>
+                                                        {filteredProjects.map(p => (
+                                                            <a href="#projects" onClick={onClose} key={p.id} className="flex items-center justify-between p-3 rounded-lg hover:bg-white/5 transition-colors group">
+                                                                <div className="flex flex-col">
+                                                                    <span className="text-white font-medium group-hover:text-accent transition-colors">{p.title}</span>
+                                                                    <span className="text-xs text-textTertiary truncate max-w-[300px]">{p.description}</span>
+                                                                </div>
+                                                                <Icons.ArrowRight />
+                                                            </a>
+                                                        ))}
+                                                    </div>
+                                                )}
+                                                {filteredSkills.length > 0 && (
+                                                    <div>
+                                                        <div className="px-3 pb-2 pt-1 text-xs font-semibold text-textTertiary uppercase tracking-wider">Skills</div>
+                                                        <div className="flex flex-wrap gap-2 px-2">
+                                                            {filteredSkills.map(s => (
+                                                                <span key={s} className="px-3 py-1.5 rounded-md bg-white/5 border border-white/10 text-sm text-textSecondary">{s}</span>
+                                                            ))}
+                                                        </div>
+                                                    </div>
+                                                )}
+                                                {filteredProjects.length === 0 && filteredSkills.length === 0 && (
+                                                    <div className="p-8 text-center text-textTertiary">
+                                                        No results found for "{search}"
+                                                    </div>
+                                                )}
+                                            </div>
+                                        )}
+                                    </div>
+                                    <div className="px-4 py-3 bg-black/40 border-t border-white/5 flex items-center justify-between text-xs text-textTertiary">
+                                        <div className="flex items-center gap-4">
+                                            <span className="flex items-center gap-1"><kbd className="bg-white/10 px-1.5 rounded">↑↓</kbd> Navigate</span>
+                                            <span className="flex items-center gap-1"><kbd className="bg-white/10 px-1.5 rounded">↵</kbd> Select</span>
+                                        </div>
+                                        <div>Rahul Arya / Portfolio</div>
+                                    </div>
+                                </motion.div>
+                            </div>
+                        </>
+                    )}
+                </AnimatePresence>
+            );
+        };
+
+        const Navbar = ({ toggleCmdK }) => {
+            const [scrolled, setScrolled] = useState(false);
+
+            useEffect(() => {
+                const handleScroll = () => setScrolled(window.scrollY > 50);
+                window.addEventListener('scroll', handleScroll);
+                return () => window.removeEventListener('scroll', handleScroll);
+            }, []);
+
+            return (
+                <header className={`fixed top-0 w-full z-40 transition-all duration-300 ${scrolled ? 'py-4' : 'py-6'}`}>
+                    <div className="max-w-6xl mx-auto px-6">
+                        <div className={`flex items-center justify-between rounded-2xl transition-all duration-500 ${scrolled ? 'glass-panel px-6 py-3' : 'px-2 py-2'}`}>
+                            
+                            <a href="#" className="font-semibold text-lg tracking-tight flex items-center gap-2 group">
+                                <div className="w-8 h-8 rounded-full bg-accent/20 flex items-center justify-center border border-accent/30 group-hover:bg-accent/30 transition-colors">
+                                    <span className="text-accent font-bold">R</span>
+                                </div>
+                                <span className="hidden sm:block">Rahul Arya</span>
+                            </a>
+
+                            <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-textSecondary">
+                                {['About', 'Experience', 'Projects', 'Skills'].map(item => (
+                                    <a key={item} href={`#${item.toLowerCase()}`} className="hover:text-white transition-colors">
+                                        {item}
+                                    </a>
+                                ))}
+                            </nav>
+
+                            <div className="flex items-center gap-3">
+                                <button 
+                                    onClick={toggleCmdK}
+                                    className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-xs text-textSecondary hover:bg-white/10 hover:text-white transition-all active:scale-95"
+                                >
+                                    <Icons.Search />
+                                    <span>Search</span>
+                                    <kbd className="ml-2 px-1.5 py-0.5 rounded bg-black/50 text-[10px] font-sans">⌘K</kbd>
+                                </button>
+                                <a 
+                                    href="#contact"
+                                    className="px-4 py-2 rounded-lg bg-white text-black text-sm font-semibold hover:bg-gray-200 transition-colors active:scale-95"
+                                >
+                                    Contact
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+            );
+        };
+
+        const Hero = ({ toggleCmdK }) => {
+            return (
+                <section className="relative min-h-screen flex items-center pt-32 pb-20 overflow-hidden">
+                    <div className="max-w-6xl mx-auto px-6 w-full relative z-10 flex flex-col items-center text-center">
+                        
+                        <motion.div 
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8, ease: "easeOut" }}
+                            className="inline-block mb-6 px-4 py-1.5 rounded-full border border-accent/20 bg-accent/5 text-accent text-xs font-semibold tracking-wider"
+                        >
+                            ECONOMICS • DATA • MACHINE LEARNING • AI
+                        </motion.div>
+
+                        <motion.h1 
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
+                            className="text-5xl md:text-7xl lg:text-[100px] font-bold tracking-tighter mb-6 leading-tight"
+                        >
+                            Rahul Arya
+                        </motion.h1>
+
+                        <motion.p 
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ duration: 1, delay: 0.3 }}
+                            className="text-lg md:text-xl text-textSecondary max-w-2xl mb-10 leading-relaxed"
+                        >
+                            Bridging complex economic theory with advanced data science. Specializing in credit risk modelling, statistical analysis, and autonomous AI systems.
+                        </motion.p>
+
+                        <motion.div 
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.5, delay: 0.5 }}
+                            className="flex flex-col sm:flex-row gap-4 mb-20"
+                        >
+                            <a href="#projects" className="px-6 py-3 rounded-xl bg-white text-black font-semibold hover:bg-gray-200 transition-all active:scale-95 flex items-center justify-center gap-2">
+                                Explore my work <Icons.ArrowRight />
+                            </a>
+                            <a href="Rahul Arya.pdf" target="_blank" className="px-6 py-3 rounded-xl bg-surface border border-white/10 text-white font-medium hover:bg-surfaceHover transition-all active:scale-95 flex items-center justify-center gap-2">
+                                View CV <Icons.FileText />
+                            </a>
+                        </motion.div>
+
+                        {/* Mock Command Interface Visual */}
+                        <motion.div 
+                            initial={{ opacity: 0, y: 40 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 1, delay: 0.7, ease: [0.16, 1, 0.3, 1] }}
+                            className="w-full max-w-3xl glass-panel rounded-2xl p-4 md:p-6 shadow-2xl relative group cursor-pointer animate-float-slow"
+                            onClick={toggleCmdK}
+                        >
+                            {/* Inner highlight */}
+                            <div className="absolute inset-0 rounded-2xl bg-gradient-to-b from-white/5 to-transparent pointer-events-none"></div>
+                            
+                            <div className="flex items-center gap-3 px-4 py-3 bg-black/40 rounded-lg border border-white/5 mb-6 group-hover:border-white/10 transition-colors">
+                                <Icons.Search />
+                                <span className="text-textSecondary text-sm">Explore portfolio commands...</span>
+                                <div className="ml-auto flex gap-1">
+                                    <kbd className="px-2 py-1 rounded bg-white/10 text-xs font-sans">⌘</kbd>
+                                    <kbd className="px-2 py-1 rounded bg-white/10 text-xs font-sans">K</kbd>
+                                </div>
+                            </div>
+
+                            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-left">
+                                {[
+                                    { icon: Icons.TerminalSquare, label: "Projects", desc: "4 deep dives" },
+                                    { icon: Icons.Briefcase, label: "Experience", desc: "Risk & Product" },
+                                    { icon: Icons.Code, label: "Skills", desc: "ML, Data, Cloud" },
+                                    { icon: Icons.Award, label: "Achievements", desc: "Competitions" }
+                                ].map((item, i) => (
+                                    <div key={i} className="p-3 rounded-xl hover:bg-white/5 transition-colors border border-transparent hover:border-white/5">
+                                        <div className="mb-2">{item.icon()}</div>
+                                        <div className="text-sm font-medium text-white mb-0.5">{item.label}</div>
+                                        <div className="text-xs text-textTertiary">{item.desc}</div>
+                                    </div>
+                                ))}
+                            </div>
+                        </motion.div>
+                    </div>
+                </section>
+            );
+        };
+
+        const About = () => {
+            return (
+                <section id="about" className="py-24 relative z-10">
+                    <div className="max-w-6xl mx-auto px-6">
+                        <SectionHeader title="About" subtitle="Economics driven by computation." />
+                        
+                        <div className="grid md:grid-cols-2 gap-12 lg:gap-24 items-start">
+                            <motion.div 
+                                initial={{ opacity: 0, x: -20 }}
+                                whileInView={{ opacity: 1, x: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ duration: 0.6 }}
+                                className="space-y-6 text-lg text-textSecondary leading-relaxed"
+                            >
+                                <p>
+                                    I am an economics postgraduate combining rigorous statistical theory with modern machine learning techniques. My focus lies at the intersection of predictive modelling and business strategy.
+                                </p>
+                                <p>
+                                    Currently, I specialize in <strong className="text-white font-medium">credit risk modelling</strong>, utilizing advanced tree-based models and deep learning to assess financial vulnerability. I am also deeply interested in AI automation and agentic workflows for operational efficiency.
+                                </p>
+                            </motion.div>
+
+                            <motion.div 
+                                initial={{ opacity: 0, x: 20 }}
+                                whileInView={{ opacity: 1, x: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ duration: 0.6, delay: 0.2 }}
+                            >
+                                <div className="glass-panel p-6 rounded-2xl">
+                                    <h3 className="text-sm font-semibold text-textTertiary uppercase tracking-wider mb-6">Core Capabilities</h3>
+                                    <div className="flex flex-wrap gap-2">
+                                        {CV_DATA.skills.Programming.concat(CV_DATA.skills.AI_ML.slice(0, 4)).map((skill, i) => (
+                                            <span 
+                                                key={i} 
+                                                className="px-4 py-2 rounded-lg bg-surface border border-white/5 text-sm font-medium hover:bg-white/10 hover:border-white/20 transition-all cursor-default hover:-translate-y-0.5 hover:text-accent shadow-sm"
+                                            >
+                                                {skill}
+                                            </span>
+                                        ))}
+                                    </div>
+                                </div>
+                            </motion.div>
+                        </div>
+                    </div>
+                </section>
+            );
+        };
+
+        const Experience = () => {
+            return (
+                <section id="experience" className="py-24 relative z-10">
+                    <div className="max-w-6xl mx-auto px-6">
+                        <SectionHeader title="Experience" subtitle="Professional trajectory." />
+                        
+                        <div className="space-y-12 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-px before:bg-gradient-to-b before:from-transparent before:via-white/10 before:to-transparent">
+                            {CV_DATA.experience.map((exp, index) => (
+                                <motion.div 
+                                    key={exp.id}
+                                    initial={{ opacity: 0, y: 20 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    viewport={{ once: true, margin: "-100px" }}
+                                    transition={{ duration: 0.6, delay: index * 0.1 }}
+                                    className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active"
+                                >
+                                    {/* Timeline Marker */}
+                                    <div className="flex items-center justify-center w-10 h-10 rounded-full border border-white/10 bg-surface shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 shadow shadow-black/50 group-hover:border-accent/50 group-hover:bg-accent/10 transition-colors z-10 ml-0 md:ml-0">
+                                        <div className="w-2 h-2 rounded-full bg-textTertiary group-hover:bg-accent transition-colors"></div>
+                                    </div>
+
+                                    {/* Content Card */}
+                                    <div className="w-[calc(100%-4rem)] md:w-[calc(50%-3rem)] premium-card rounded-2xl p-6 md:p-8">
+                                        <div className="flex flex-col md:flex-row md:items-center justify-between mb-4 gap-2">
+                                            <div>
+                                                <h3 className="text-xl font-bold text-white tracking-tight">{exp.role}</h3>
+                                                <div className="text-accent font-medium">{exp.company}</div>
+                                            </div>
+                                            <div className="inline-block px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-medium text-textSecondary self-start md:self-auto">
+                                                {exp.year}
+                                            </div>
+                                        </div>
+                                        
+                                        <ul className="space-y-3 mb-6">
+                                            {exp.details.map((detail, i) => (
+                                                <li key={i} className="text-sm text-textSecondary leading-relaxed flex gap-3">
+                                                    <span className="text-white/20 mt-1.5 shrink-0">•</span>
+                                                    <span>{detail}</span>
+                                                </li>
+                                            ))}
+                                        </ul>
+
+                                        <div className="flex flex-wrap gap-2 pt-4 border-t border-white/5">
+                                            {exp.tags.map(tag => (
+                                                <span key={tag} className="text-xs font-medium text-textTertiary bg-black/50 px-2.5 py-1 rounded-md border border-white/5">
+                                                    {tag}
+                                                </span>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </motion.div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            );
+        };
+
+        const Projects = () => {
+            return (
+                <section id="projects" className="py-24 relative z-10">
+                    <div className="max-w-6xl mx-auto px-6">
+                        <SectionHeader title="Selected Work" subtitle="Models, analytics, and pipelines." />
+                        
+                        <div className="grid md:grid-cols-2 gap-6 lg:gap-8">
+                            {CV_DATA.projects.map((project, index) => (
+                                <motion.div 
+                                    key={project.id}
+                                    initial={{ opacity: 0, y: 30 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    viewport={{ once: true, margin: "-50px" }}
+                                    transition={{ duration: 0.6, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
+                                    className="premium-card rounded-2xl p-8 flex flex-col group relative overflow-hidden h-full"
+                                >
+                                    {/* Decorative subtle gradient background on hover */}
+                                    <div className="absolute inset-0 bg-gradient-to-br from-accent/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+                                    
+                                    <div className="flex justify-between items-start mb-8 relative z-10">
+                                        <div className="flex items-center gap-3">
+                                            <span className="text-xs font-mono text-textTertiary bg-white/5 px-2 py-1 rounded">0{index + 1}</span>
+                                            <span className="text-xs font-medium text-textTertiary border border-white/10 px-2 py-1 rounded-full">{project.year}</span>
+                                        </div>
+                                        <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center border border-white/10 group-hover:bg-white/10 group-hover:-translate-y-1 group-hover:translate-x-1 transition-all">
+                                            <Icons.ArrowRight />
+                                        </div>
+                                    </div>
+
+                                    <h3 className="text-2xl font-bold text-white tracking-tight mb-3 relative z-10 group-hover:text-accent transition-colors">{project.title}</h3>
+                                    
+                                    <p className="text-textSecondary text-sm leading-relaxed mb-8 flex-grow relative z-10">
+                                        {project.description}
+                                    </p>
+
+                                    {/* Metrics Block */}
+                                    <div className="grid grid-cols-2 gap-4 mb-8 relative z-10">
+                                        {project.metrics.map((metric, i) => (
+                                            <div key={i} className="bg-black/40 border border-white/5 rounded-xl p-4 flex flex-col justify-center">
+                                                <div className="text-2xl lg:text-3xl font-bold text-white tracking-tighter group-hover:scale-105 transition-transform origin-left">{metric.value}</div>
+                                                <div className="text-xs text-textTertiary uppercase tracking-wider font-semibold mt-1">{metric.label}</div>
+                                            </div>
+                                        ))}
+                                    </div>
+
+                                    <div className="flex flex-wrap gap-2 mt-auto relative z-10">
+                                        {project.tags.map(tag => (
+                                            <span key={tag} className="text-xs text-textSecondary bg-surface border border-white/10 px-3 py-1.5 rounded-lg">
+                                                {tag}
+                                            </span>
+                                        ))}
+                                    </div>
+                                </motion.div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            );
+        };
+
+        const EducationAndAchievements = () => {
+            return (
+                <section id="education" className="py-24 relative z-10 bg-black/20 border-y border-white/5">
+                    <div className="max-w-6xl mx-auto px-6">
+                        <div className="grid lg:grid-cols-2 gap-16">
+                            
+                            {/* Education */}
+                            <div>
+                                <SectionHeader title="Education" />
+                                <div className="space-y-4">
+                                    {CV_DATA.education.map((edu, index) => (
+                                        <motion.div 
+                                            key={index}
+                                            initial={{ opacity: 0, x: -20 }}
+                                            whileInView={{ opacity: 1, x: 0 }}
+                                            viewport={{ once: true }}
+                                            transition={{ duration: 0.5, delay: index * 0.1 }}
+                                            className="glass-panel p-5 rounded-xl flex flex-col md:flex-row md:items-center justify-between gap-4 group hover:bg-white/5 transition-colors"
+                                        >
+                                            <div>
+                                                <h4 className="text-white font-semibold text-lg">{edu.degree}</h4>
+                                                <p className="text-sm text-textSecondary mt-1">{edu.institution}</p>
+                                            </div>
+                                            <div className="flex md:flex-col items-center md:items-end justify-between md:justify-center gap-2 md:gap-1 shrink-0">
+                                                <span className="text-xs font-mono text-textTertiary">{edu.year}</span>
+                                            </div>
+                                        </motion.div>
+                                    ))}
+                                </div>
+                            </div>
+
+                            {/* Achievements */}
+                            <div>
+                                <SectionHeader title="Achievements" />
+                                <div className="space-y-4">
+                                    {CV_DATA.achievements.map((ach, index) => (
+                                        <motion.div 
+                                            key={index}
+                                            initial={{ opacity: 0, x: 20 }}
+                                            whileInView={{ opacity: 1, x: 0 }}
+                                            viewport={{ once: true }}
+                                            transition={{ duration: 0.5, delay: index * 0.1 }}
+                                            className="premium-card p-5 rounded-xl flex items-start gap-5 group"
+                                        >
+                                            <div className="shrink-0 w-16 text-center">
+                                                <div className="text-xl md:text-2xl font-bold text-white tracking-tighter group-hover:text-accent transition-colors">{ach.rank}</div>
+                                            </div>
+                                            <div className="w-px bg-white/10 self-stretch"></div>
+                                            <div>
+                                                <h4 className="text-white font-medium mb-1">{ach.title}</h4>
+                                                <p className="text-sm text-textTertiary">{ach.desc}</p>
+                                            </div>
+                                        </motion.div>
+                                    ))}
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </section>
+            );
+        };
+
+        const Contact = () => {
+            const [copiedEmail, setCopiedEmail] = useState(false);
+            const [copiedPhone, setCopiedPhone] = useState(false);
+
+            const handleCopy = (text, type) => {
+                navigator.clipboard.writeText(text);
+                if (type === 'email') {
+                    setCopiedEmail(true);
+                    setTimeout(() => setCopiedEmail(false), 2000);
+                } else {
+                    setCopiedPhone(true);
+                    setTimeout(() => setCopiedPhone(false), 2000);
+                }
+            };
+
+            return (
+                <section id="contact" className="py-32 relative z-10 text-center">
+                    <div className="max-w-3xl mx-auto px-6">
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.95 }}
+                            whileInView={{ opacity: 1, scale: 1 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.6 }}
+                            className="glass-panel p-12 rounded-3xl relative overflow-hidden"
+                        >
+                            {/* Inner ambient glow */}
+                            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-accent/5 blur-3xl pointer-events-none rounded-full"></div>
+
+                            <h2 className="text-4xl md:text-5xl font-bold tracking-tighter text-white mb-4 relative z-10">
+                                Let's build something <span className="italic text-textSecondary font-light">interesting.</span>
+                            </h2>
+                            <p className="text-textSecondary mb-10 relative z-10">Economics · Data · Machine Learning · AI</p>
+                            
+                            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 relative z-10">
+                                <button 
+                                    onClick={() => handleCopy(CV_DATA.personal.email, 'email')}
+                                    className="w-full sm:w-auto px-6 py-3 rounded-xl bg-white text-black font-semibold hover:bg-gray-200 transition-all active:scale-95 flex items-center justify-center gap-2 group"
+                                >
+                                    {copiedEmail ? <Icons.Check /> : <Icons.Mail />}
+                                    {copiedEmail ? "Copied ✓" : "Copy Email"}
+                                </button>
+                                <button 
+                                    onClick={() => handleCopy(CV_DATA.personal.phone, 'phone')}
+                                    className="w-full sm:w-auto px-6 py-3 rounded-xl bg-surface border border-white/10 text-white font-medium hover:bg-white/5 transition-all active:scale-95 flex items-center justify-center gap-2"
+                                >
+                                    {copiedPhone ? <Icons.Check /> : <Icons.Phone />}
+                                    {copiedPhone ? "Copied ✓" : "Copy Phone"}
+                                </button>
+                            </div>
+                        </motion.div>
+                    </div>
+                </section>
+            );
+        };
+
+        const Footer = () => (
+            <footer className="py-8 border-t border-white/5 relative z-10 text-center text-sm text-textTertiary">
+                <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
+                    <div className="flex items-center gap-2 font-medium text-textSecondary">
+                        <div className="w-5 h-5 rounded-full bg-white/10 flex items-center justify-center text-[10px]">R</div>
+                        Rahul Arya
+                    </div>
+                    <div className="flex gap-6">
+                        <a href="#" className="hover:text-white transition-colors">LinkedIn</a>
+                        <a href="#" className="hover:text-white transition-colors">GitHub</a>
+                        <a href="Rahul Arya.pdf" target="_blank" className="hover:text-white transition-colors">Resume</a>
+                    </div>
+                    <div>© {new Date().getFullYear()}</div>
+                </div>
+            </footer>
+        );
+
+        const App = () => {
+            const [cmdKOpen, setCmdKOpen] = useState(false);
+
+            const toggleCmdK = (forceState) => {
+                if (typeof forceState === 'boolean') {
+                    setCmdKOpen(forceState);
+                } else {
+                    setCmdKOpen(prev => !prev);
+                }
+            };
+
+            // Prevent scrolling when command palette is open
+            useEffect(() => {
+                if (cmdKOpen) {
+                    document.body.style.overflow = 'hidden';
+                } else {
+                    document.body.style.overflow = 'unset';
+                }
+            }, [cmdKOpen]);
+
+            useEffect(() => {
+                // Initialize Lucide icons after render
+                if (window.lucide) {
+                    window.lucide.createIcons();
+                }
+            });
+
+            return (
+                <div className="antialiased selection:bg-accent/30 selection:text-white min-h-screen flex flex-col relative">
+                    <BackgroundEffects />
+                    <CommandPalette isOpen={cmdKOpen} onClose={() => setCmdKOpen(false)} />
+                    
+                    <Navbar toggleCmdK={toggleCmdK} />
+                    
+                    <main className="flex-grow">
+                        <Hero toggleCmdK={toggleCmdK} />
+                        <About />
+                        <Experience />
+                        <Projects />
+                        <EducationAndAchievements />
+                        <Contact />
+                    </main>
+
+                    <Footer />
+                </div>
+            );
+        };
+
+        // Render Application
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
