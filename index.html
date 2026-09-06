@@ -1,1151 +1,641 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rahul Arya — Economics × Data × AI</title>
-    <meta name="description" content="Rahul Arya's portfolio covering economics, machine learning, data analytics, credit risk modelling, and AI.">
-    
-    <!-- Fonts -->
+    <title>Rahul Arya | Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- React & ReactDOM -->
-    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
-    
-    <!-- Babel for JSX -->
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    
-    <!-- Framer Motion -->
-    <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
-    
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
-
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                    },
-                    colors: {
-                        background: '#070707',
-                        surface: '#0c0c0c',
-                        surfaceHover: '#141414',
-                        borderSubtle: 'rgba(255, 255, 255, 0.06)',
-                        borderHover: 'rgba(255, 255, 255, 0.12)',
-                        textPrimary: '#ffffff',
-                        textSecondary: '#a1a1aa',
-                        textTertiary: '#71717a',
-                        accent: '#ff2a5f',
-                        accentMuted: 'rgba(255, 42, 95, 0.2)',
-                    },
-                    letterSpacing: {
-                        tighter: '-0.04em',
-                        tight: '-0.02em',
-                    },
-                    animation: {
-                        'breathe-slow': 'breathe 20s ease-in-out infinite',
-                        'float-slow': 'float 12s ease-in-out infinite',
-                        'pulse-glow': 'pulseGlow 4s ease-in-out infinite',
-                    },
-                    keyframes: {
-                        breathe: {
-                            '0%, 100%': { transform: 'scale(1) translate(0, 0)', opacity: 0.5 },
-                            '50%': { transform: 'scale(1.1) translate(2%, 3%)', opacity: 0.8 },
-                        },
-                        float: {
-                            '0%, 100%': { transform: 'translateY(0)' },
-                            '50%': { transform: 'translateY(-10px)' },
-                        },
-                        pulseGlow: {
-                            '0%, 100%': { opacity: 0.6 },
-                            '50%': { opacity: 1 },
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        body {
-            background-color: #070707;
-            color: #ffffff;
-            overflow-x: hidden;
+        html {
             scroll-behavior: smooth;
         }
-
-        /* Subtle Noise Overlay */
-        .bg-noise {
+        body {
+            background-color: #141414;
+            font-family: 'Inter', sans-serif;
+            color: #fff;
+            overflow-x: hidden; /* Prevent horizontal scroll */
+        }
+        
+        section {
+            scroll-margin-top: 5rem; /* Offset for fixed navbar */
+        }
+        
+        /* Full Page Parallax Background Effect */
+        body::before {
+            content: '';
             position: fixed;
             top: 0;
             left: 0;
-            width: 100vw;
-            height: 100vh;
-            pointer-events: none;
-            z-index: 50;
-            opacity: 0.08; /* Slightly stronger noise for a frosted liquid glass vibe */
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-            mix-blend-mode: overlay;
+            right: 0;
+            bottom: 0;
+            background-image: url('https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?q=80&w=2071&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed; /* This creates the parallax effect */
+            z-index: -2;
+            opacity: 0.1; /* Soften the background image */
         }
 
-        /* Fluid / Water-Type Ambient Background */
-        .ambient-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            pointer-events: none;
-            z-index: 0;
-            overflow: hidden;
-            background-color: #030001; /* Deepest almost-black */
+        .header-bg {
+            background-image: url('https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=2070&auto=format&fit=crop');
+            background-size: 110%; /* Corrected for parallax effect */
+            background-position: center;
         }
 
-        .liquid-wrapper {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 140vw; /* Oversized to prevent edges showing */
-            height: 140vh;
-            transform: translate(-50%, -50%);
-            pointer-events: none;
-            z-index: 0;
-            filter: blur(90px); /* Huge blur for the liquid merge effect */
+        .card-row {
+            scrollbar-width: none;
+            -ms-overflow-style: none;
         }
-
-        .liquid-blob {
-            position: absolute;
-            mix-blend-mode: screen;
-            animation: fluidMorph 25s ease-in-out infinite alternate;
-            opacity: 0.7;
-        }
-
-        /* Front Layer Liquid */
-        .blob-1 {
-            width: 55vw;
-            height: 55vw;
-            background: radial-gradient(circle, rgba(255,42,95,0.8) 0%, transparent 70%);
-            top: 10%;
-            left: 10%;
-            animation-delay: 0s;
-            transform-origin: center;
-        }
-
-        .blob-2 {
-            width: 65vw;
-            height: 65vw;
-            background: radial-gradient(circle, rgba(128,0,28,0.9) 0%, transparent 70%);
-            bottom: 10%;
-            right: 10%;
-            animation-delay: -5s;
-            transform-origin: top left;
-        }
-
-        /* Deep Layer Liquid (for depth) */
-        .blob-3 {
-            width: 60vw;
-            height: 60vw;
-            background: radial-gradient(circle, rgba(255,0,55,0.6) 0%, transparent 70%);
-            top: 40%;
-            left: 40%;
-            animation-delay: -10s;
-            transform-origin: bottom right;
-        }
-
-        .blob-4 {
-            width: 75vw;
-            height: 75vw;
-            background: radial-gradient(circle, rgba(16,83,255,0.35) 0%, transparent 70%); /* Deep blue for liquid shadows */
-            bottom: -15%;
-            left: -15%;
-            animation-delay: -15s;
-            transform-origin: center;
-        }
-
-        @keyframes fluidMorph {
-            0% {
-                border-radius: 40% 60% 70% 30% / 40% 40% 60% 50%;
-                transform: translate(0, 0) rotate(0deg) scale(1);
-            }
-            33% {
-                border-radius: 70% 30% 50% 50% / 30% 30% 70% 70%;
-                transform: translate(8vw, -8vh) rotate(120deg) scale(1.1);
-            }
-            66% {
-                border-radius: 100% 60% 60% 100% / 100% 100% 60% 60%;
-                transform: translate(-8vw, 10vh) rotate(240deg) scale(0.9);
-            }
-            100% {
-                border-radius: 40% 60% 70% 30% / 40% 40% 60% 50%;
-                transform: translate(0, 0) rotate(360deg) scale(1);
-            }
-        }
-
-        /* Glass UI Utilities */
-        .glass-panel {
-            background: rgba(12, 12, 12, 0.65);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            box-shadow: 0 24px 48px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
-        }
-
-        .premium-card {
-            background: #0c0c0c;
-            border: 1px solid rgba(255, 255, 255, 0.04);
-            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        
-        .premium-card:hover {
-            background: #121212;
-            border-color: rgba(255, 255, 255, 0.1);
-            transform: translateY(-2px);
-            box-shadow: 0 12px 32px rgba(0,0,0,0.4), 0 0 20px rgba(255, 42, 95, 0.05);
-        }
-
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #070707;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #222;
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #333;
-        }
-
-        /* Text Utilities */
-        .text-gradient {
-            background: linear-gradient(to right, #ffffff, #a1a1aa);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        /* Hide scrollbar for command palette */
-        .hide-scrollbar::-webkit-scrollbar {
+        .card-row::-webkit-scrollbar {
             display: none;
         }
-        .hide-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
+        
+        /* 3D Tilt Effect on Cards with Enhanced Glow */
+        .card {
+            transition: transform 0.2s ease-out, box-shadow 0.3s ease;
+            cursor: pointer;
+            flex-shrink: 0;
+            transform-style: preserve-3d;
+            position: relative; /* Needed for AI icon positioning */
+            border-radius: 0.5rem; /* Ensure parent has border-radius */
         }
+        .card:hover {
+            box-shadow: 0 15px 30px rgba(0,0,0,0.7), 0 0 30px 4px rgba(229, 9, 20, 0.6);
+        }
+        .card.active {
+             /* CORRECTED BORDER: Use inset box-shadow */
+            box-shadow: inset 0 0 0 3px #E50914, 0 0 30px 4px rgba(229, 9, 20, 0.6);
+        }
+        
+        .modal {
+            transition: opacity 0.3s ease-in-out;
+        }
+        .ai-chat-bubble, .ai-summary-content {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .loading-spinner {
+            border: 4px solid rgba(255, 255, 255, 0.2);
+            border-top: 4px solid #E50914;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .skill-tag {
+            transition: all 0.2s ease-in-out;
+        }
+        .skill-tag:hover {
+            background-color: #E50914;
+            color: #fff;
+            transform: translateY(-2px);
+        }
+        .top-nav {
+            transition: background-color 0.3s ease-in-out;
+        }
+        .top-nav.scrolled {
+            background-color: rgba(20, 20, 20, 0.9);
+            backdrop-filter: blur(5px);
+        }
+        
+        /* Scroll Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Mobile Responsive Adjustments */
+        @media (max-width: 768px) {
+            .card-row-container {
+                 padding: 0 1rem; /* Add padding on mobile */
+            }
+            .card-row {
+                flex-direction: column;
+                align-items: center;
+                gap: 1.5rem;
+                overflow-x: visible;
+            }
+            .card {
+                width: 100%;
+            }
+            .nav-links {
+                display: none; /* Hide nav links, could be replaced with hamburger */
+            }
+        }
+        
+        /* Refined Logo Style */
+        .logo-text {
+           color: #E50914;
+        }
+
+        /* AI Summary Icon */
+        .ai-summary-icon {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            z-index: 10;
+            background-color: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 9999px;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #E50914;
+            font-weight: bold;
+            font-size: 14px;
+            cursor: pointer;
+            opacity: 0; /* Initially hidden */
+            transition: all 0.3s ease;
+        }
+        .card:hover .ai-summary-icon {
+            opacity: 1; /* Appear on hover */
+        }
+        .ai-summary-icon:hover {
+            background-color: #E50914;
+            color: white;
+            transform: scale(1.1);
+        }
+
     </style>
 </head>
-<body>
-    <div id="root"></div>
+<body class="bg-[#141414]">
 
-    <script type="text/babel">
-        const { useState, useEffect, useRef, useMemo } = React;
-        const { motion, AnimatePresence, useScroll, useTransform } = window.Motion;
+    <!-- Top Navigation -->
+    <nav id="top-nav" class="fixed top-0 left-0 right-0 z-40 p-4 md:px-12 flex justify-between items-center top-nav">
+        <a href="#" class="text-2xl font-bold"><span class="logo-text">RA</span></a>
+        <div class="nav-links hidden md:flex items-center space-x-6 text-sm">
+            <a href="#" class="hover:text-gray-300">Home</a>
+            <a href="#experience" class="hover:text-gray-300">Experience</a>
+            <a href="#projects" class="hover:text-gray-300">Projects</a>
+            <a href="#skills" class="hover:text-gray-300">Skills</a>
+            <a href="#contact" class="hover:text-gray-300">Contact</a>
+        </div>
+    </nav>
 
-        // --- DATA STRUCTURE ---
-        const CV_DATA = {
-            personal: {
-                name: "Rahul Arya",
-                role: "Economics × Data × Machine Learning × AI",
-                summary: "Economics postgraduate specializing in machine learning, credit risk modelling, statistical analysis, and AI automation. Building data-driven solutions for complex financial and operational problems.",
-                email: "rahularyajii2002@gmail.com",
-                phone: "+91-8271661801",
-                linkedin: "#", // Add real URL here
-                github: "#" // Add real URL here
-            },
-            experience: [
-                {
-                    id: "exp1",
-                    role: "Credit Risk Modelling Intern",
-                    company: "Central Bank of India",
-                    year: "2025",
-                    details: [
-                        "Developed expertise in credit risk modeling using ML, leveraging banking domain knowledge across NPA, DPD, loan types, OSP, PAR, and delinquency levels.",
-                        "Performed comprehensive data preprocessing and feature engineering including missing/invalid-value treatment, dataset merging, categorical/ordinal encoding, Chi-square, VIF, and ANOVA.",
-                        "Built and compared Random Forest, Decision Tree, and XGBoost models for multi-class classification (P1-P4 risk categories) and tuned XGBoost using GridSearchCV.",
-                        "Achieved 71% classification accuracy, evaluating Precision, Recall, and F1-score across risk classes in alignment with Basel III guidelines."
-                    ],
-                    tags: ["Credit Risk", "XGBoost", "Feature Engineering", "Banking"]
-                },
-                {
-                    id: "exp2",
-                    role: "Product Manager & Marketing Intern",
-                    company: "Beyondriffs",
-                    year: "2024",
-                    details: [
-                        "Led a highly successful initiative that boosted engagement by 18%, working closely with marketing to prioritize product development.",
-                        "Enhanced overall efficiency via roadmap refinement, strong teamwork, and 250+ user research & data-driven, smarter product decisions."
-                    ],
-                    tags: ["Product Management", "Data-Driven Decisions", "User Research"]
-                }
-            ],
-            projects: [
-                {
-                    id: "proj1",
-                    title: "Credit Card Fraud Detection",
-                    instructor: "Prof. Basanti Kumari Nayak",
-                    year: "2025",
-                    metrics: [
-                        { value: "0.96", label: "ROC-AUC" },
-                        { value: "227K+", label: "Records" }
-                    ],
-                    description: "Designed and trained an unsupervised deep learning Autoencoder to model normal behavior and detect fraudulent anomalies using reconstruction error.",
-                    details: "Built a StandardScaler preprocessing pipeline and trained the Autoencoder for 100 epochs using batch-based optimization to learn legitimate transaction patterns and identify abnormal transactions.",
-                    tags: ["Deep Learning", "Autoencoder", "Anomaly Detection"]
-                },
-                {
-                    id: "proj2",
-                    title: "Predicting Farmers Income in India",
-                    instructor: "Asst. Prof. Rachit Saini",
-                    year: "2025",
-                    demoLink: "https://rahularya014.github.io/Farmer-income-Demo/",
-                    metrics: [
-                        { value: "0.7513", label: "R² Score" },
-                        { value: "48K+", label: "Records" }
-                    ],
-                    description: "Developed an end-to-end ML pipeline integrating demographic, agricultural, socioeconomic, and geographic data.",
-                    details: "Built a 75:25 XGBoost-LightGBM weighted ensemble, incorporating Ridge as a base learner. Created a deployment-ready inference pipeline with serialized models, target encoding, and land-income interaction features.",
-                    tags: ["XGBoost", "Ensemble Methods", "ML Pipeline", "Feature Eng"]
-                },
-                {
-                    id: "proj3",
-                    title: "Offer Engagement Forecasting Model",
-                    instructor: "Amex Campus Challenge",
-                    year: "2025",
-                    demoLink: "https://rahularya014.github.io/Predictive-Modeling-for-Customer-Engagement-with-Offers-using-AMEX-Data-/",
-                    metrics: [
-                        { value: "0.82", label: "AUC" },
-                        { value: "78%", label: "Precision" }
-                    ],
-                    description: "Built 400+ behavioral, transactional, temporal, and offer-level attributes to forecast engagement.",
-                    details: "Trained CatBoost, XGBoost & LightGBM models. Handled severe class imbalance with SMOTE and class-weighting. Introduced Click Momentum and adaptive time-decay, delivering 15% higher efficacy.",
-                    tags: ["CatBoost", "SMOTE", "Time-Series Features"]
-                },
-                {
-                    id: "proj4",
-                    title: "AI-Powered Supply Chain Analytics",
-                    instructor: "Asst. Prof. Rachit Saini",
-                    year: "2025",
-                    metrics: [
-                        { value: "OAuth", label: "Secured" },
-                        { value: "n8n", label: "Automated" }
-                    ],
-                    description: "Developed an event-driven automation pipeline for supply-chain decision making.",
-                    details: "Used n8n, Supabase/PostgreSQL, and Gmail API. Leveraged Quadratic AI for KPI computation and dynamically generating SQL queries to accelerate insights.",
-                    tags: ["AI Agents", "n8n", "PostgreSQL", "Quadratic AI"]
-                }
-            ],
-            education: [
-                {
-                    degree: "M.A. Economics",
-                    institution: "Delhi School of Economics, University of Delhi",
-                    year: "2024–2026"
-                },
-                {
-                    degree: "B.A. (H) Economics",
-                    institution: "Satyawati College, University of Delhi",
-                    year: "2020–2023"
-                },
-                {
-                    degree: "Class XII (CBSE)",
-                    institution: "Millia Convent English School, Purnia",
-                    year: "2020"
-                },
-                {
-                    degree: "Class X (CBSE)",
-                    institution: "Millia Convent English School, Purnia",
-                    year: "2018"
-                }
-            ],
-            achievements: [
-                { title: "AMEX Campus Challenge", rank: "AIR 422", desc: "Offer Engagement Forecasting Model" },
-                { title: "IIT Delhi M.Sc. Economics", rank: "AIR 66", desc: "Demonstrated strong analytical skills" },
-                { title: "Case Competitions", rank: "Round 2", desc: "Kepler Cannon & Accenture" },
-                { title: "Hackathons & Events", rank: "Finalist", desc: "Pan-IIT AI/ML (IITG), IIM Calcutta Trilytics'25, Tata Imagination Challenge" }
-            ],
-            skills: {
-                Programming: ["Python", "SQL", "PySpark", "SAS", "MATLAB", "Advanced Excel"],
-                Analytics: ["Power BI", "Statistical Modeling", "Data Mining", "Credit Risk Analysis", "Decision Trees"],
-                AI_ML: ["Machine Learning", "Deep Learning", "Generative AI & LLMs", "Agentic AI", "NLP & Transformers", "Prompt Engineering", "Image Processing"],
-                Cloud_Data: ["Hadoop", "AWS"]
-            },
-            certifications: [
-                "Career Essentials in Data Analysis (Microsoft & LinkedIn)",
-                "Analysing and Visualizing Data with Microsoft Power BI",
-                "MySQL 5.6 Database Administrator",
-                "Python for Beginners"
-            ]
-        };
+    <!-- Header Section -->
+    <header class="h-[80vh] md:h-[90vh] header-bg relative pt-16">
+        <div class="absolute inset-0 bg-gradient-to-t from-[#141414] via-black/70 to-black/30"></div>
+        <div class="relative z-10 flex flex-col justify-end h-full p-4 md:p-12 space-y-4">
+            <h1 class="text-5xl md:text-7xl font-extrabold text-white tracking-tighter reveal">Rahul Arya</h1>
+            <p class="text-xl md:text-2xl text-gray-300 max-w-2xl reveal" style="transition-delay: 0.2s;">Economist & Data Scientist. Turning economic intuition into data-driven solutions with AI & Machine Learning.</p>
+            <div class="flex items-center space-x-4 flex-wrap gap-y-4 reveal" style="transition-delay: 0.4s;">
+                <a href="#projects" class="px-8 py-3 bg-white text-black font-bold rounded hover:bg-gray-200 transition-transform hover:scale-105">View Work</a>
+                <button id="ai-assistant-btn" class="px-8 py-3 bg-red-600 text-white font-bold rounded hover:bg-red-700 transition-transform hover:scale-105">Ask My AI</button>
+                <a href="#contact" class="px-8 py-3 bg-transparent border-2 border-white text-white font-bold rounded hover:bg-white hover:text-black transition-transform hover:scale-105">Contact Me</a>
+            </div>
+        </div>
+    </header>
+    
 
-        // --- ICONS (Lucide mapped) ---
-        const Icons = {
-            Search: () => <i data-lucide="search" className="w-4 h-4"></i>,
-            Command: () => <i data-lucide="command" className="w-4 h-4"></i>,
-            Briefcase: () => <i data-lucide="briefcase" className="w-5 h-5 text-textSecondary"></i>,
-            GraduationCap: () => <i data-lucide="graduation-cap" className="w-5 h-5 text-textSecondary"></i>,
-            Award: () => <i data-lucide="award" className="w-5 h-5 text-textSecondary"></i>,
-            Code: () => <i data-lucide="code" className="w-5 h-5 text-textSecondary"></i>,
-            Mail: () => <i data-lucide="mail" className="w-4 h-4"></i>,
-            Phone: () => <i data-lucide="phone" className="w-4 h-4"></i>,
-            ExternalLink: () => <i data-lucide="external-link" className="w-4 h-4"></i>,
-            ArrowRight: () => <i data-lucide="arrow-right" className="w-4 h-4"></i>,
-            FileText: () => <i data-lucide="file-text" className="w-4 h-4"></i>,
-            Check: () => <i data-lucide="check" className="w-4 h-4"></i>,
-            ChevronRight: () => <i data-lucide="chevron-right" className="w-4 h-4"></i>,
-            X: () => <i data-lucide="x" className="w-4 h-4"></i>,
-            TerminalSquare: () => <i data-lucide="terminal-square" className="w-5 h-5 text-textSecondary"></i>
-        };
+    <main class="py-12 px-4 md:px-12 space-y-16">
 
-        // --- COMPONENTS ---
-
-        const BackgroundEffects = () => {
-            const { motion, useMotionValue, useSpring, useTransform, useMotionTemplate } = window.Motion;
-
-            // Values for parallax motion sensor tracking
-            const mouseX = useMotionValue(0);
-            const mouseY = useMotionValue(0);
-            
-            // Values for the spotlight (center of screen by default)
-            const windowX = useMotionValue(typeof window !== 'undefined' ? window.innerWidth / 2 : 500);
-            const windowY = useMotionValue(typeof window !== 'undefined' ? window.innerHeight / 2 : 500);
-
-            // Smooth spring config for a premium software feel. Heavier mass for "liquid" feel.
-            const springConfig = { damping: 50, stiffness: 200, mass: 1 };
-            const smoothX = useSpring(mouseX, springConfig);
-            const smoothY = useSpring(mouseY, springConfig);
-
-            // Parallax movement ranges based on mouse position
-            const translateX = useTransform(smoothX, [-0.5, 0.5], [60, -60]);
-            const translateY = useTransform(smoothY, [-0.5, 0.5], [60, -60]);
-            
-            // Inverse movement for deeper fluid layers to create parallax depth
-            const translateXInverse = useTransform(smoothX, [-0.5, 0.5], [-40, 40]);
-            const translateYInverse = useTransform(smoothY, [-0.5, 0.5], [-40, 40]);
-
-            useEffect(() => {
-                const handleMouseMove = (e) => {
-                    if(window.innerWidth > 768) {
-                        // Normalize mouse coordinates to a -0.5 to +0.5 range
-                        mouseX.set(e.clientX / window.innerWidth - 0.5);
-                        mouseY.set(e.clientY / window.innerHeight - 0.5);
-                        windowX.set(e.clientX);
-                        windowY.set(e.clientY);
-                    }
-                };
-                window.addEventListener('mousemove', handleMouseMove);
-                return () => window.removeEventListener('mousemove', handleMouseMove);
-            }, [mouseX, mouseY, windowX, windowY]);
-
-            const spotlightStyle = useMotionTemplate`radial-gradient(600px circle at ${windowX}px ${windowY}px, rgba(255, 255, 255, 0.03), transparent 80%)`;
-
-            return (
-                <>
-                    <div className="ambient-container">
-                        <div className="liquid-wrapper">
-                            {/* Layer 1: Front liquid */}
-                            <motion.div style={{ x: translateX, y: translateY }} className="absolute inset-0 w-full h-full">
-                                <div className="liquid-blob blob-1"></div>
-                                <div className="liquid-blob blob-2"></div>
-                            </motion.div>
-                            
-                            {/* Layer 2: Deep liquid (moves opposite for depth) */}
-                            <motion.div style={{ x: translateXInverse, y: translateYInverse }} className="absolute inset-0 w-full h-full">
-                                <div className="liquid-blob blob-3"></div>
-                                <div className="liquid-blob blob-4"></div>
-                            </motion.div>
-                        </div>
+        <!-- Professional Experience Section -->
+        <section id="experience" class="reveal">
+            <h3 class="category-title text-2xl font-bold mb-4">PROFESSIONAL EXPERIENCE</h3>
+            <div class="card-row-container -mx-4 md:-mx-12">
+                <div class="flex space-x-4 overflow-x-auto pb-4 card-row px-4 md:px-12">
+                    <div class="card w-72 bg-[#282828] rounded-lg overflow-hidden" data-title="Credit Risk Modelling Intern" data-description="Developed ML models for credit risk at the Central Bank of India, integrating banking domain knowledge (NPA, DPD) with advanced feature engineering. Implemented end-to-end workflows and integrated Basel III and PAR metrics to ensure regulatory compliance." data-image="https://images.unsplash.com/photo-1579532582937-16c108930bf6?q=80&w=1974&auto=format&fit=crop">
+                        <div class="ai-summary-icon">AI</div>
+                        <img src="https://images.unsplash.com/photo-1579532582937-16c108930bf6?q=80&w=1974&auto=format&fit=crop" alt="Financial Institution Building" class="w-full h-40 object-cover">
+                        <div class="card-content p-4"><h4 class="font-bold text-lg">Central Bank of India</h4></div>
                     </div>
-                    <div className="bg-noise"></div>
-                    {/* Mouse Spotlight */}
-                    <motion.div 
-                        className="fixed inset-0 pointer-events-none z-10 hidden md:block"
-                        style={{ background: spotlightStyle }}
-                    ></motion.div>
-                </>
-            );
-        };
-
-        const SectionHeader = ({ title, subtitle }) => (
-            <motion.div 
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                className="mb-12 md:mb-16"
-            >
-                <h2 className="text-3xl md:text-4xl font-bold tracking-tighter text-white mb-3">{title}</h2>
-                {subtitle && <p className="text-textSecondary text-lg md:text-xl">{subtitle}</p>}
-            </motion.div>
-        );
-
-        const AnimatedBoy = () => {
-            const { motion } = window.Motion;
-            return (
-                <div className="w-9 h-9 relative flex items-center justify-center" style={{ perspective: '500px' }}>
-                    <motion.div
-                        animate={{
-                            y: [-1, 1.5, -1],
-                            rotateY: [-15, 15, -15],
-                            rotateX: [5, -5, 5]
-                        }}
-                        transition={{
-                            duration: 5,
-                            repeat: Infinity,
-                            ease: "easeInOut"
-                        }}
-                        className="w-full h-full"
-                        style={{ transformStyle: 'preserve-3d' }}
-                    >
-                        <svg viewBox="0 0 100 100" className="w-full h-full drop-shadow-md overflow-visible">
-                            <defs>
-                                <radialGradient id="skin3D" cx="35%" cy="35%" r="65%">
-                                    <stop offset="0%" stopColor="#ffdeb5" />
-                                    <stop offset="70%" stopColor="#e2aa7b" />
-                                    <stop offset="100%" stopColor="#c58c5f" />
-                                </radialGradient>
-                                <radialGradient id="hair3D" cx="40%" cy="20%" r="80%">
-                                    <stop offset="0%" stopColor="#374151" />
-                                    <stop offset="50%" stopColor="#111827" />
-                                    <stop offset="100%" stopColor="#000000" />
-                                </radialGradient>
-                                <linearGradient id="goggles" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" stopColor="#ff2a5f" />
-                                    <stop offset="50%" stopColor="#c50030" />
-                                    <stop offset="100%" stopColor="#6b0015" />
-                                </linearGradient>
-                                <linearGradient id="reflection" x1="0%" y1="0%" x2="0%" y2="100%">
-                                    <stop offset="0%" stopColor="rgba(255,255,255,0.8)" />
-                                    <stop offset="100%" stopColor="rgba(255,255,255,0)" />
-                                </linearGradient>
-                            </defs>
-                            
-                            {/* Back Hair */}
-                            <ellipse cx="50" cy="45" rx="38" ry="40" fill="url(#hair3D)" />
-                            {/* Face Base */}
-                            <circle cx="50" cy="55" r="32" fill="url(#skin3D)" />
-                            {/* Front Hair Sweeps */}
-                            <path d="M 20 45 Q 40 10 75 30 Q 82 40 85 50 Q 75 15 45 15 Q 15 25 15 50 Z" fill="url(#hair3D)" />
-                            {/* Ears */}
-                            <circle cx="18" cy="55" r="6" fill="url(#skin3D)" />
-                            <circle cx="82" cy="55" r="6" fill="url(#skin3D)" />
-                            {/* Tech Goggles */}
-                            <rect x="22" y="42" width="56" height="18" rx="6" fill="url(#goggles)" />
-                            <rect x="24" y="44" width="52" height="8" rx="4" fill="url(#reflection)" opacity="0.6" />
-                            {/* Goggle Eyes */}
-                            <circle cx="35" cy="51" r="2.5" fill="#fff" />
-                            <circle cx="65" cy="51" r="2.5" fill="#fff" />
-                            {/* Smile */}
-                            <path d="M 42 72 Q 50 78 58 72" fill="none" stroke="#b07050" strokeWidth="2.5" strokeLinecap="round" />
-                        </svg>
-                    </motion.div>
+                    <div class="card w-72 bg-[#282828] rounded-lg overflow-hidden" data-title="Product Manager Intern" data-description="Led initiatives boosting user engagement by 18% at Beyondriffs. Refined project roadmaps, fostered team collaboration, and spearheaded market research with over 250 users to drive data-informed product decisions." data-image="https://images.unsplash.com/photo-1556761175-b413da4baf72?q=80&w=1974&auto=format&fit=crop">
+                        <div class="ai-summary-icon">AI</div>
+                        <img src="https://images.unsplash.com/photo-1556761175-b413da4baf72?q=80&w=1974&auto=format&fit=crop" alt="Tech Company" class="w-full h-40 object-cover">
+                        <div class="card-content p-4"><h4 class="font-bold text-lg">Beyondriffs (Product)</h4></div>
+                    </div>
+                    <div class="card w-72 bg-[#282828] rounded-lg overflow-hidden" data-title="Marketing Intern" data-description="Utilized insights from over 100 surveys to develop customer-centric marketing strategies at Beyondriffs. Built compelling product narratives and value propositions to support sales and marketing campaigns." data-image="https://images.unsplash.com/photo-1557804506-669a67965ba0?q=80&w=1974&auto=format&fit=crop">
+                        <div class="ai-summary-icon">AI</div>
+                        <img src="https://images.unsplash.com/photo-1557804506-669a67965ba0?q=80&w=1974&auto=format&fit=crop" alt="Marketing Strategy" class="w-full h-40 object-cover">
+                        <div class="card-content p-4"><h4 class="font-bold text-lg">Beyondriffs (Marketing)</h4></div>
+                    </div>
                 </div>
-            );
-        };
+            </div>
+        </section>
 
-        const CommandPalette = ({ isOpen, onClose }) => {
-            const [search, setSearch] = useState("");
-            
-            useEffect(() => {
-                const handleKeyDown = (e) => {
-                    if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
-                        e.preventDefault();
-                        isOpen ? onClose() : onClose(true); // Toggle logic handled in parent, this acts as request
-                    }
-                    if (e.key === 'Escape' && isOpen) {
-                        onClose();
-                    }
-                };
-                window.addEventListener('keydown', handleKeyDown);
-                return () => window.removeEventListener('keydown', handleKeyDown);
-            }, [isOpen, onClose]);
-
-            // Simple search logic
-            const filteredProjects = CV_DATA.projects.filter(p => 
-                p.title.toLowerCase().includes(search.toLowerCase()) || 
-                p.tags.some(t => t.toLowerCase().includes(search.toLowerCase()))
-            );
-            
-            const allSkills = Object.values(CV_DATA.skills).flat();
-            const filteredSkills = allSkills.filter(s => s.toLowerCase().includes(search.toLowerCase()));
-
-            if (!isOpen) return null;
-
-            return (
-                <AnimatePresence>
-                    {isOpen && (
-                        <>
-                            <motion.div 
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                exit={{ opacity: 0 }}
-                                transition={{ duration: 0.2 }}
-                                className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50"
-                                onClick={onClose}
-                            />
-                            <div className="fixed inset-0 z-50 flex items-start justify-center pt-[20vh] px-4 pointer-events-none">
-                                <motion.div 
-                                    initial={{ opacity: 0, scale: 0.95, y: -10 }}
-                                    animate={{ opacity: 1, scale: 1, y: 0 }}
-                                    exit={{ opacity: 0, scale: 0.95, y: -10 }}
-                                    transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
-                                    className="w-full max-w-2xl glass-panel rounded-2xl overflow-hidden pointer-events-auto shadow-2xl flex flex-col"
-                                    onClick={e => e.stopPropagation()}
-                                >
-                                    <div className="flex items-center px-4 py-3 border-b border-white/5">
-                                        <Icons.Search />
-                                        <input 
-                                            type="text" 
-                                            placeholder="Search projects, skills, experience..." 
-                                            className="w-full bg-transparent border-none outline-none text-white px-3 py-2 text-lg placeholder:text-textTertiary"
-                                            value={search}
-                                            onChange={e => setSearch(e.target.value)}
-                                            autoFocus
-                                        />
-                                        <div className="flex items-center gap-1 text-xs text-textTertiary bg-white/5 px-2 py-1 rounded">
-                                            <span>ESC</span>
-                                        </div>
-                                    </div>
-                                    
-                                    <div className="max-h-[60vh] overflow-y-auto hide-scrollbar p-2">
-                                        {search === "" ? (
-                                            <div className="p-4 text-sm text-textTertiary">
-                                                <div className="mb-2 uppercase tracking-widest text-[10px] font-semibold">Navigation</div>
-                                                {['About', 'Experience', 'Projects', 'Skills', 'Contact'].map(item => (
-                                                    <a 
-                                                        key={item}
-                                                        href={`#${item.toLowerCase()}`}
-                                                        onClick={onClose}
-                                                        className="flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition-colors text-textSecondary hover:text-white"
-                                                    >
-                                                        <Icons.ChevronRight />
-                                                        Go to {item}
-                                                    </a>
-                                                ))}
-                                            </div>
-                                        ) : (
-                                            <div className="p-2 space-y-4">
-                                                {filteredProjects.length > 0 && (
-                                                    <div>
-                                                        <div className="px-3 pb-2 pt-1 text-xs font-semibold text-textTertiary uppercase tracking-wider">Projects</div>
-                                                        {filteredProjects.map(p => (
-                                                            <a href="#projects" onClick={onClose} key={p.id} className="flex items-center justify-between p-3 rounded-lg hover:bg-white/5 transition-colors group">
-                                                                <div className="flex flex-col">
-                                                                    <span className="text-white font-medium group-hover:text-accent transition-colors">{p.title}</span>
-                                                                    <span className="text-xs text-textTertiary truncate max-w-[300px]">{p.description}</span>
-                                                                </div>
-                                                                <Icons.ArrowRight />
-                                                            </a>
-                                                        ))}
-                                                    </div>
-                                                )}
-                                                {filteredSkills.length > 0 && (
-                                                    <div>
-                                                        <div className="px-3 pb-2 pt-1 text-xs font-semibold text-textTertiary uppercase tracking-wider">Skills</div>
-                                                        <div className="flex flex-wrap gap-2 px-2">
-                                                            {filteredSkills.map(s => (
-                                                                <span key={s} className="px-3 py-1.5 rounded-md bg-white/5 border border-white/10 text-sm text-textSecondary">{s}</span>
-                                                            ))}
-                                                        </div>
-                                                    </div>
-                                                )}
-                                                {filteredProjects.length === 0 && filteredSkills.length === 0 && (
-                                                    <div className="p-8 text-center text-textTertiary">
-                                                        No results found for "{search}"
-                                                    </div>
-                                                )}
-                                            </div>
-                                        )}
-                                    </div>
-                                    <div className="px-4 py-3 bg-black/40 border-t border-white/5 flex items-center justify-between text-xs text-textTertiary">
-                                        <div className="flex items-center gap-4">
-                                            <span className="flex items-center gap-1"><kbd className="bg-white/10 px-1.5 rounded">↑↓</kbd> Navigate</span>
-                                            <span className="flex items-center gap-1"><kbd className="bg-white/10 px-1.5 rounded">↵</kbd> Select</span>
-                                        </div>
-                                        <div>Rahul Arya / Portfolio</div>
-                                    </div>
-                                </motion.div>
-                            </div>
-                        </>
-                    )}
-                </AnimatePresence>
-            );
-        };
-
-        const Navbar = ({ toggleCmdK }) => {
-            const [scrolled, setScrolled] = useState(false);
-
-            useEffect(() => {
-                const handleScroll = () => setScrolled(window.scrollY > 50);
-                window.addEventListener('scroll', handleScroll);
-                return () => window.removeEventListener('scroll', handleScroll);
-            }, []);
-
-            return (
-                <header className={`fixed top-0 w-full z-40 transition-all duration-300 ${scrolled ? 'py-4' : 'py-6'}`}>
-                    <div className="max-w-6xl mx-auto px-6">
-                        <div className={`flex items-center justify-between rounded-2xl transition-all duration-500 ${scrolled ? 'glass-panel px-6 py-3' : 'px-2 py-2'}`}>
-                            
-                            <a href="#" className="font-semibold text-lg tracking-tight flex items-center gap-3 group">
-                                <AnimatedBoy />
-                                <span className="hidden sm:block">Rahul Arya</span>
-                            </a>
-
-                            <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-textSecondary">
-                                {['About', 'Experience', 'Projects', 'Skills'].map(item => (
-                                    <a key={item} href={`#${item.toLowerCase()}`} className="hover:text-white transition-colors">
-                                        {item}
-                                    </a>
-                                ))}
-                            </nav>
-
-                            <div className="flex items-center gap-3">
-                                <button 
-                                    onClick={toggleCmdK}
-                                    className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-xs text-textSecondary hover:bg-white/10 hover:text-white transition-all active:scale-95"
-                                >
-                                    <Icons.Search />
-                                    <span>Search</span>
-                                    <kbd className="ml-2 px-1.5 py-0.5 rounded bg-black/50 text-[10px] font-sans">⌘K</kbd>
-                                </button>
-                                <a 
-                                    href="#contact"
-                                    className="px-4 py-2 rounded-lg bg-white text-black text-sm font-semibold hover:bg-gray-200 transition-colors active:scale-95"
-                                >
-                                    Contact
-                                </a>
-                            </div>
-                        </div>
+        <!-- Projects Section -->
+        <section id="projects" class="reveal">
+            <h3 class="category-title text-2xl font-bold mb-4">FEATURED PROJECTS</h3>
+            <div class="card-row-container -mx-4 md:-mx-12">
+                <div class="flex space-x-4 overflow-x-auto pb-4 card-row px-4 md:px-12">
+                     <div class="card w-72 bg-[#282828] rounded-lg overflow-hidden" data-title="Farmer Income Prediction" data-description="Developed a model integrating demographic, agronomic, climatic, and market data, achieving an R² of 0.7513 with an XGBoost+LightGBM ensemble." data-image="https://images.unsplash.com/photo-1560493676-04071c5f467b?q=80&w=1974&auto=format&fit=crop" data-link="https://rahularya014.github.io/Farmer-income-Demo/">
+                        <div class="ai-summary-icon">AI</div>
+                        <img src="https://images.unsplash.com/photo-1560493676-04071c5f467b?q=80&w=1974&auto=format&fit=crop" alt="Farmer examining crops" class="w-full h-40 object-cover">
+                        <div class="card-content p-4"><h4 class="font-bold text-lg">Farmer Income Prediction</h4></div>
                     </div>
-                </header>
-            );
-        };
-
-        const Hero = ({ toggleCmdK }) => {
-            return (
-                <section className="relative min-h-screen flex items-center justify-center pt-32 pb-16 px-6 overflow-hidden">
-                    <div className="relative z-10 w-full max-w-4xl mx-auto flex flex-col items-center text-center">
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                        >
-                            <span className="text-[10px] sm:text-xs font-bold tracking-[0.2em] text-accent uppercase mb-6 block">
-                                Economics • Data • Machine Learning • AI
-                            </span>
-                            <h1 className="text-5xl sm:text-7xl md:text-[100px] font-bold tracking-tighter text-white mb-6 leading-none">
-                                Rahul Arya
-                            </h1>
-                            <p className="text-lg sm:text-xl text-textSecondary max-w-2xl mx-auto mb-10 leading-relaxed font-light">
-                                {CV_DATA.personal.summary}
-                            </p>
-                            <div className="flex flex-col sm:flex-row items-center gap-4 justify-center mb-16">
-                                <a href="#projects" className="w-full sm:w-auto px-6 py-3 rounded-xl bg-white text-black font-semibold hover:bg-gray-200 transition-all active:scale-95 flex items-center justify-center gap-2">
-                                    Explore my work <Icons.ArrowRight />
-                                </a>
-                                <a href="https://drive.google.com/file/d/18_KUEYu-EROBhBy8cNGaeHZW7e_tDOQo/view?usp=drive_link" target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto px-6 py-3 rounded-xl bg-surface border border-white/10 text-white font-medium hover:bg-white/5 transition-all active:scale-95 flex items-center justify-center gap-2 group">
-                                    <Icons.FileText /> View CV
-                                </a>
-                            </div>
-                        </motion.div>
-
-                        <motion.div
-                            initial={{ opacity: 0, y: 40 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-                            className="w-full max-w-2xl glass-panel rounded-2xl overflow-hidden p-2 relative cursor-pointer group"
-                            onClick={() => toggleCmdK(true)}
-                        >
-                            <div className="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                            <div className="flex items-center px-4 py-3 border-b border-white/5 opacity-70">
-                                <Icons.Search />
-                                <span className="ml-3 text-textTertiary text-sm">Search Rahul's work...</span>
-                                <div className="ml-auto text-xs text-textTertiary bg-white/5 px-2 py-1 rounded">⌘K</div>
-                            </div>
-                            <div className="p-2 space-y-1 opacity-50">
-                                <div className="flex items-center p-2 rounded-lg bg-white/5"><Icons.Briefcase /><span className="ml-3 text-sm text-textSecondary">Experience</span></div>
-                                <div className="flex items-center p-2 rounded-lg"><Icons.Code /><span className="ml-3 text-sm text-textSecondary">Projects</span></div>
-                            </div>
-                        </motion.div>
+                    <div class="card w-72 bg-[#282828] rounded-lg overflow-hidden" data-title="AMEX Offer Engagement Forecasting" data-description="Achieved AIR 422 in the AMEX Campus Challenge. Engineered 400+ features and built an optimized XGB+LGBM model (AUC 0.82, 78% precision). Designed Click Momentum and adaptive time-decay features, boosting performance by 15%." data-image="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop" data-link="https://rahularya014.github.io/Predictive-Modeling-for-Customer-Engagement-with-Offers-using-AMEX-Data-/">
+                        <div class="ai-summary-icon">AI</div>
+                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop" alt="Data Science Analyst Dashboard" class="w-full h-40 object-cover">
+                        <div class="card-content p-4"><h4 class="font-bold text-lg">AMEX Offer Engagement</h4></div>
                     </div>
-                </section>
-            );
-        };
-
-        const About = () => {
-            const skills = Object.values(CV_DATA.skills).flat();
-            return (
-                <section id="about" className="py-24 relative z-10">
-                    <div className="max-w-6xl mx-auto px-6">
-                        <SectionHeader title="About" />
-                        <div className="grid md:grid-cols-2 gap-12 items-start">
-                            <motion.div 
-                                initial={{ opacity: 0, x: -20 }}
-                                whileInView={{ opacity: 1, x: 0 }}
-                                viewport={{ once: true }}
-                                transition={{ duration: 0.6 }}
-                            >
-                                <p className="text-textSecondary text-lg leading-relaxed font-light">
-                                    I am an Economics postgraduate merging the worlds of rigorous statistical modeling and modern AI architecture. My focus lies at the intersection of credit risk analytics, agentic AI, and scalable machine learning pipelines, transforming complex datasets into reliable, automated insights.
-                                </p>
-                            </motion.div>
-                            <motion.div 
-                                initial={{ opacity: 0, x: 20 }}
-                                whileInView={{ opacity: 1, x: 0 }}
-                                viewport={{ once: true }}
-                                transition={{ duration: 0.6 }}
-                                className="flex flex-wrap gap-3"
-                            >
-                                {skills.map(skill => (
-                                    <span key={skill} className="px-4 py-2 rounded-full bg-surface border border-borderSubtle text-sm text-textSecondary hover:text-white hover:border-borderHover hover:bg-white/10 transition-colors cursor-default">
-                                        {skill}
-                                    </span>
-                                ))}
-                            </motion.div>
-                        </div>
+                     <div class="card w-72 bg-[#282828] rounded-lg overflow-hidden" data-title="Credit Card Fraud Detection" data-description="Designed a Keras autoencoder on over 227K transactions, achieving a ROC-AUC of 0.95 for anomaly detection. Also built a Sklearn pipeline with 93.4% test accuracy." data-image="https://images.unsplash.com/photo-1563013544-824ae1b704d3?q=80&w=2070&auto=format&fit=crop" data-link="#">
+                        <div class="ai-summary-icon">AI</div>
+                        <img src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?q=80&w=2070&auto=format&fit=crop" alt="Credit Card Fraud Detection" class="w-full h-40 object-cover">
+                        <div class="card-content p-4"><h4 class="font-bold text-lg">Credit Card Fraud Detection</h4></div>
                     </div>
-                </section>
-            );
-        };
-
-        const Experience = () => {
-            return (
-                <section id="experience" className="py-24 relative z-10">
-                    <div className="max-w-6xl mx-auto px-6">
-                        <SectionHeader title="Experience" />
-                        <div className="space-y-12 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-[1px] before:bg-gradient-to-b before:from-transparent before:via-white/10 before:to-transparent">
-                            {CV_DATA.experience.map((exp, i) => (
-                                <motion.div 
-                                    key={exp.id} 
-                                    initial={{ opacity: 0, y: 20 }}
-                                    whileInView={{ opacity: 1, y: 0 }}
-                                    viewport={{ once: true, margin: "-50px" }}
-                                    transition={{ duration: 0.5, delay: i * 0.1 }}
-                                    className="relative flex flex-col md:flex-row items-start md:items-center justify-between md:odd:flex-row-reverse group"
-                                >
-                                    <div className="flex items-center justify-center w-10 h-10 rounded-full border border-white/10 bg-surface absolute left-0 md:left-1/2 -translate-x-1/2 shrink-0 group-hover:border-accent group-hover:text-accent transition-colors z-10">
-                                        <Icons.Briefcase />
-                                    </div>
-                                    <div className="w-[calc(100%-4rem)] md:w-[calc(50%-3rem)] ml-auto md:ml-0 premium-card p-8 rounded-2xl group-hover:-translate-y-1">
-                                        <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-2">
-                                            <h3 className="text-xl font-bold text-white">{exp.role}</h3>
-                                            <span className="text-accent text-sm font-semibold bg-accent/10 px-3 py-1 rounded-full w-fit">{exp.year}</span>
-                                        </div>
-                                        <div className="text-textSecondary font-medium mb-6">{exp.company}</div>
-                                        <ul className="space-y-3 mb-6">
-                                            {exp.details.map((detail, j) => (
-                                                <li key={j} className="text-textTertiary text-sm flex gap-3 items-start leading-relaxed">
-                                                    <span className="text-white/20 mt-1 shrink-0"><Icons.ChevronRight /></span>
-                                                    <span>{detail}</span>
-                                                </li>
-                                            ))}
-                                        </ul>
-                                        <div className="flex flex-wrap gap-2 pt-4 border-t border-white/5">
-                                            {exp.tags.map(tag => (
-                                                <span key={tag} className="text-xs px-2 py-1 rounded bg-white/5 text-textSecondary border border-white/5">{tag}</span>
-                                            ))}
-                                        </div>
-                                    </div>
-                                </motion.div>
-                            ))}
-                        </div>
+                     <div class="card w-72 bg-[#282828] rounded-lg overflow-hidden" data-title="AI-Powered Supply Chain Analytics" data-description="Automated a full ETL pipeline using N8N. Leveraged Quadratic AI for prompt-based KPI computation, auto-generating SQL logic and visual insights to accelerate decision-making." data-image="https://images.unsplash.com/photo-1578575437130-527eed3abbec?q=80&w=2070&auto=format&fit=crop" data-link="#">
+                        <div class="ai-summary-icon">AI</div>
+                        <img src="https://images.unsplash.com/photo-1578575437130-527eed3abbec?q=80&w=2070&auto=format&fit=crop" alt="Supply Chain Logistics" class="w-full h-40 object-cover">
+                        <div class="card-content p-4"><h4 class="font-bold text-lg">AI Supply Chain Analytics</h4></div>
                     </div>
-                </section>
-            );
-        };
-
-        const Projects = () => {
-            const [selected, setSelected] = useState(null);
-            
-            useEffect(() => {
-                if (selected) document.body.style.overflow = 'hidden';
-                else document.body.style.overflow = 'unset';
-                return () => document.body.style.overflow = 'unset';
-            }, [selected]);
-
-            return (
-                <section id="projects" className="py-24 relative z-10">
-                    <div className="max-w-6xl mx-auto px-6">
-                        <SectionHeader title="Projects" subtitle="Selected analytical models & ML pipelines." />
-                        <div className="grid md:grid-cols-2 gap-6">
-                            {CV_DATA.projects.map((proj, idx) => (
-                                <motion.div 
-                                    key={proj.id} 
-                                    initial={{ opacity: 0, y: 20 }}
-                                    whileInView={{ opacity: 1, y: 0 }}
-                                    viewport={{ once: true }}
-                                    transition={{ duration: 0.5, delay: idx * 0.1 }}
-                                    className="premium-card p-8 rounded-2xl cursor-pointer group flex flex-col h-full" 
-                                    onClick={() => setSelected(proj)}
-                                >
-                                    <div className="flex justify-between items-start mb-4">
-                                        <div className="flex items-center gap-3">
-                                            <div className="text-xs font-mono text-accent bg-accent/10 px-2 py-1 rounded">PROJ_0{idx + 1}</div>
-                                            {proj.demoLink && (
-                                                <div className="flex items-center gap-1 text-[10px] font-bold tracking-wider uppercase text-white/70 bg-white/10 px-2 py-1 rounded">
-                                                    Demo
-                                                </div>
-                                            )}
-                                        </div>
-                                        <span className="text-textTertiary text-sm">{proj.year}</span>
-                                    </div>
-                                    <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-accent transition-colors">{proj.title}</h3>
-                                    <p className="text-textSecondary mb-8 flex-grow line-clamp-3">{proj.description}</p>
-                                    
-                                    <div className="grid grid-cols-2 gap-4 mb-6 pt-6 border-t border-white/5">
-                                        {proj.metrics.map(m => (
-                                            <div key={m.label} className="flex flex-col">
-                                                <span className="text-3xl font-bold text-white tracking-tight">{m.value}</span>
-                                                <span className="text-[10px] text-textTertiary uppercase tracking-widest mt-1">{m.label}</span>
-                                            </div>
-                                        ))}
-                                    </div>
-                                    <div className="flex flex-wrap gap-2">
-                                        {proj.tags.slice(0, 3).map(tag => (
-                                            <span key={tag} className="text-xs px-2 py-1 rounded bg-white/5 text-textSecondary border border-white/5">{tag}</span>
-                                        ))}
-                                        {proj.tags.length > 3 && <span className="text-xs px-2 py-1 rounded bg-white/5 text-textSecondary border border-white/5">+{proj.tags.length - 3}</span>}
-                                    </div>
-                                </motion.div>
-                            ))}
-                        </div>
+                     <div class="card w-72 bg-[#282828] rounded-lg overflow-hidden" data-title="Impact of COVID-19 on Indian Economy" data-description="Analyzed secondary data on COVID-19's economic impact, noting a 23.9% GDP drop in Q1 2020-21 and a significant 37% export decline." data-image="https://images.unsplash.com/photo-1584036561566-baf8f5f1b144?q=80&w=2070&auto=format&fit=crop" data-link="#">
+                        <div class="ai-summary-icon">AI</div>
+                        <img src="https://images.unsplash.com/photo-1584036561566-baf8f5f1b144?q=80&w=2070&auto=format&fit=crop" alt="Stock market graph during pandemic" class="w-full h-40 object-cover">
+                        <div class="card-content p-4"><h4 class="font-bold text-lg">COVID-19 Economic Impact</h4></div>
                     </div>
-
-                    <AnimatePresence>
-                        {selected && (
-                            <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6">
-                                <motion.div 
-                                    initial={{ opacity: 0 }} 
-                                    animate={{ opacity: 1 }} 
-                                    exit={{ opacity: 0 }} 
-                                    className="absolute inset-0 bg-black/80 backdrop-blur-md"
-                                    onClick={() => setSelected(null)}
-                                />
-                                <motion.div 
-                                    initial={{ opacity: 0, scale: 0.95, y: 20 }} 
-                                    animate={{ opacity: 1, scale: 1, y: 0 }} 
-                                    exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                                    transition={{ type: "spring", damping: 25, stiffness: 300 }}
-                                    className="relative w-full max-w-3xl max-h-[85vh] overflow-y-auto hide-scrollbar glass-panel rounded-3xl p-8 sm:p-12 shadow-2xl"
-                                >
-                                    <button 
-                                        onClick={() => setSelected(null)}
-                                        className="absolute top-6 right-6 p-2 rounded-full bg-white/5 hover:bg-white/10 text-white transition-colors"
-                                    >
-                                        <Icons.X />
-                                    </button>
-                                    
-                                    <div className="text-accent text-sm font-semibold tracking-wider uppercase mb-2">{selected.year}</div>
-                                    
-                                    <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 mb-8 pr-8">
-                                        <h2 className="text-3xl sm:text-4xl font-bold text-white leading-tight">{selected.title}</h2>
-                                        {selected.demoLink && (
-                                            <a 
-                                                href={selected.demoLink} 
-                                                target="_blank" 
-                                                rel="noopener noreferrer"
-                                                onClick={(e) => e.stopPropagation()}
-                                                className="shrink-0 flex items-center gap-2 px-4 py-2 rounded-xl bg-white text-black font-semibold hover:bg-gray-200 transition-all active:scale-95"
-                                            >
-                                                Live Demo <Icons.ExternalLink />
-                                            </a>
-                                        )}
-                                    </div>
-                                    
-                                    <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
-                                        {selected.metrics.map(m => (
-                                            <div key={m.label} className="bg-white/5 border border-white/10 rounded-xl p-4">
-                                                <div className="text-2xl font-bold text-white mb-1">{m.value}</div>
-                                                <div className="text-xs text-textTertiary uppercase tracking-wider">{m.label}</div>
-                                            </div>
-                                        ))}
-                                    </div>
-                                    
-                                    <div className="space-y-8 text-textSecondary leading-relaxed">
-                                        <div>
-                                            <h4 className="text-white font-semibold mb-3 flex items-center gap-2"><Icons.TerminalSquare /> Overview</h4>
-                                            <p>{selected.description}</p>
-                                        </div>
-                                        <div>
-                                            <h4 className="text-white font-semibold mb-3 flex items-center gap-2"><Icons.Code /> Technical Details</h4>
-                                            <p>{selected.details}</p>
-                                        </div>
-                                        <div>
-                                            <h4 className="text-white font-semibold mb-4 flex items-center gap-2"><Icons.Award /> Technologies</h4>
-                                            <div className="flex flex-wrap gap-2">
-                                                {selected.tags.map(tag => (
-                                                    <span key={tag} className="px-3 py-1.5 rounded-lg bg-white/10 border border-white/5 text-sm text-white">{tag}</span>
-                                                ))}
-                                            </div>
-                                        </div>
-                                        {selected.instructor && (
-                                            <div className="text-sm text-textTertiary pt-6 border-t border-white/5">
-                                                Instructor / Event: {selected.instructor}
-                                            </div>
-                                        )}
-                                    </div>
-                                </motion.div>
-                            </div>
-                        )}
-                    </AnimatePresence>
-                </section>
-            );
-        };
-
-        const EducationAndAchievements = () => {
-            return (
-                <section id="education" className="py-24 relative z-10">
-                    <div className="max-w-6xl mx-auto px-6 grid lg:grid-cols-2 gap-16">
-                        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-                            <SectionHeader title="Education" />
-                            <div className="space-y-4">
-                                {CV_DATA.education.map(edu => (
-                                    <div key={edu.degree} className="premium-card p-6 rounded-2xl">
-                                        <h4 className="text-lg font-bold text-white mb-2">{edu.degree}</h4>
-                                        <div className="text-textSecondary text-sm mb-3">{edu.institution}</div>
-                                        <div className="inline-block px-2 py-1 rounded bg-white/5 border border-white/5 text-textTertiary text-xs">{edu.year}</div>
-                                    </div>
-                                ))}
-                            </div>
-                        </motion.div>
-                        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }}>
-                            <SectionHeader title="Achievements" />
-                            <div className="space-y-4">
-                                {CV_DATA.achievements.map(ach => (
-                                    <div key={ach.title} className="premium-card p-6 rounded-2xl flex flex-col sm:flex-row sm:items-center gap-6">
-                                        <div className="flex-shrink-0 sm:w-28">
-                                            <div className="text-3xl font-bold text-white tracking-tighter">{ach.rank}</div>
-                                        </div>
-                                        <div>
-                                            <h4 className="text-base font-bold text-white mb-2">{ach.title}</h4>
-                                            <p className="text-textTertiary text-sm leading-relaxed">{ach.desc}</p>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        </motion.div>
-                    </div>
-                </section>
-            );
-        };
-
-        const Contact = () => {
-            return (
-                <section id="contact" className="py-32 relative z-10 text-center">
-                    <div className="max-w-3xl mx-auto px-6">
-                        <motion.div
-                            initial={{ opacity: 0, scale: 0.95 }}
-                            whileInView={{ opacity: 1, scale: 1 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.6 }}
-                            className="glass-panel p-12 rounded-3xl relative overflow-hidden"
-                        >
-                            {/* Inner ambient glow */}
-                            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-accent/5 blur-3xl pointer-events-none rounded-full"></div>
-
-                            <h2 className="text-4xl md:text-5xl font-bold tracking-tighter text-white mb-4 relative z-10">
-                                Let's build something <span className="italic text-textSecondary font-light">interesting.</span>
-                            </h2>
-                            <p className="text-textSecondary mb-10 relative z-10">Economics · Data · Machine Learning · AI</p>
-                            
-                            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 relative z-10">
-                                <a 
-                                    href={`mailto:${CV_DATA.personal.email}`}
-                                    className="w-full sm:w-auto px-6 py-3 rounded-xl bg-white text-black font-semibold hover:bg-gray-200 transition-all active:scale-95 flex items-center justify-center gap-2 group"
-                                >
-                                    <Icons.Mail />
-                                    Email Me
-                                </a>
-                                <a 
-                                    href={`tel:${CV_DATA.personal.phone.replace(/[^0-9+]/g, '')}`}
-                                    className="w-full sm:w-auto px-6 py-3 rounded-xl bg-surface border border-white/10 text-white font-medium hover:bg-white/5 transition-all active:scale-95 flex items-center justify-center gap-2"
-                                >
-                                    <Icons.Phone />
-                                    Call Me
-                                </a>
-                            </div>
-                        </motion.div>
-                    </div>
-                </section>
-            );
-        };
-
-        const Footer = () => (
-            <footer className="py-8 border-t border-white/5 relative z-10 text-center text-sm text-textTertiary">
-                <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
-                    <div className="flex items-center gap-2 font-medium text-textSecondary">
-                        <AnimatedBoy />
-                        Rahul Arya
-                    </div>
-                    <div className="flex gap-6">
-                        <a href="#" className="hover:text-white transition-colors">LinkedIn</a>
-                        <a href="#" className="hover:text-white transition-colors">GitHub</a>
-                        <a href="https://drive.google.com/file/d/18_KUEYu-EROBhBy8cNGaeHZW7e_tDOQo/view?usp=drive_link" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Resume</a>
-                    </div>
-                    <div>© {new Date().getFullYear()}</div>
                 </div>
-            </footer>
-        );
+            </div>
+        </section>
 
-        const App = () => {
-            const [cmdKOpen, setCmdKOpen] = useState(false);
+         <!-- Education Section -->
+        <section id="education" class="reveal">
+            <h3 class="category-title text-2xl font-bold mb-4">EDUCATION</h3>
+            <div class="card-row-container -mx-4 md:-mx-12">
+                <div class="flex space-x-4 overflow-x-auto pb-4 card-row px-4 md:px-12">
+                    <div class="card w-72 bg-[#282828] rounded-lg overflow-hidden" data-title="M.A. Economics" data-description="Currently pursuing a Master's degree in Economics from one of India's premier institutions, focusing on advanced economic theory, econometrics, and quantitative analysis." data-image="https://images.unsplash.com/photo-1606761568499-6d2451b23c66?q=80&w=1974&auto=format&fit=crop">
+                        <div class="ai-summary-icon">AI</div>
+                        <img src="https://images.unsplash.com/photo-1606761568499-6d2451b23c66?q=80&w=1974&auto=format&fit=crop" alt="Delhi School of Economics Campus" class="w-full h-40 object-cover">
+                        <div class="card-content p-4"><h4 class="font-bold text-lg">Delhi School of Economics</h4></div>
+                    </div>
+                     <div class="card w-72 bg-[#282828] rounded-lg overflow-hidden" data-title="B.A. (H) Economics" data-description="Graduated with a Bachelor's degree in Economics, building a strong foundation in microeconomics, macroeconomics, statistics, and mathematical methods for economics." data-image="https://images.unsplash.com/photo-1562774053-701939374585?q=80&w=2086&auto=format&fit=crop">
+                        <div class="ai-summary-icon">AI</div>
+                        <img src="https://images.unsplash.com/photo-1562774053-701939374585?q=80&w=2086&auto=format&fit=crop" alt="University College" class="w-full h-40 object-cover">
+                        <div class="card-content p-4"><h4 class="font-bold text-lg">University of Delhi</h4></div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-            const toggleCmdK = (forceState) => {
-                if (typeof forceState === 'boolean') {
-                    setCmdKOpen(forceState);
+        <!-- Skills Section -->
+        <section id="skills" class="reveal">
+            <h3 class="category-title text-2xl font-bold mb-4">SKILLS</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                    <h4 class="text-xl font-semibold mb-3 text-gray-300">Technical Skills</h4>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="skill-tag bg-gray-700 text-gray-200 px-3 py-1 rounded-full flex items-center gap-2"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M8.01 4.75a.25.25 0 0 0-.25.25v.733a.25.25 0 0 0 .5 0V5a.25.25 0 0 0-.25-.25zM7.51 6.233a.25.25 0 0 1 .492 0l.92 1.839a.25.25 0 0 1-.22.328H6.81a.25.25 0 0 1-.22-.328l.92-1.84zM8 9.25a.25.25 0 0 0-.25.25v2a.25.25 0 0 0 .5 0v-2a.25.25 0 0 0-.25-.25z"/><path d="M.64 5.34a.5.5 0 0 1 .433-.245l1.32-.19a.5.5 0 0 1 .58.58l-.2 1.32a.5.5 0 0 1-.61.373L.84 7.02a.5.5 0 0 1-.2-.68zm14.72 0a.5.5 0 0 1 .2.68l-1.32.19a.5.5 0 0 1-.61-.374l.2-1.32a.5.5 0 0 1 .58-.58l1.32.19a.5.5 0 0 1 .433.245zM4.75 1.49a.25.25 0 0 0-.25-.25H3.51a.25.25 0 0 0 0 .5h.99a.25.25 0 0 0 .25-.25zM6.233 2.49a.25.25 0 0 1 .328.22l-1.84.92a.25.25 0 0 1-.328-.22l1.84-.92a.25.25 0 0 1 .22-.22zm5.534 0a.25.25 0 0 1 .22.22l-1.84.92a.25.25 0 0 1-.328-.22l1.84-.92a.25.25 0 0 1 .328-.22zM11.25 1.49a.25.25 0 0 0-.25-.25h-.99a.25.25 0 0 0 0 .5h.99a.25.25 0 0 0 .25-.25zM15.36 5.34a.5.5 0 0 1-.2.68L13.84 7.21a.5.5 0 0 1-.61-.373l.2-1.32a.5.5 0 0 1 .58-.58l1.32.19a.5.5 0 0 1 .433.245zM3.84 6.21a.5.5 0 0 1-.61.374l-1.32-.19a.5.5 0 0 1-.2-.68.5.5 0 0 1 .434-.245l1.32.19a.5.5 0 0 1 .58.58l-.2 1.32zM8.5 16a8.5 8.5 0 1 1 0-17 8.5 8.5 0 0 1 0 17zM8 1.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13z"/></svg> Python</span>
+                        <span class="skill-tag bg-gray-700 text-gray-200 px-3 py-1 rounded-full">MySQL</span>
+                        <span class="skill-tag bg-gray-700 text-gray-200 px-3 py-1 rounded-full">Data Analysis</span>
+                        <span class="skill-tag bg-gray-700 text-gray-200 px-3 py-1 rounded-full">Power BI</span>
+                        <span class="skill-tag bg-gray-700 text-gray-200 px-3 py-1 rounded-full">MS Excel</span>
+                        <span class="skill-tag bg-gray-700 text-gray-200 px-3 py-1 rounded-full">Machine Learning</span>
+                        <span class="skill-tag bg-gray-700 text-gray-200 px-3 py-1 rounded-full">XGBoost</span>
+                        <span class="skill-tag bg-gray-700 text-gray-200 px-3 py-1 rounded-full">LightGBM</span>
+                        <span class="skill-tag bg-gray-700 text-gray-200 px-3 py-1 rounded-full">Scikit-learn</span>
+                        <span class="skill-tag bg-gray-700 text-gray-200 px-3 py-1 rounded-full">Keras</span>
+                        <span class="skill-tag bg-gray-700 text-gray-200 px-3 py-1 rounded-full">Dask</span>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-xl font-semibold mb-3 text-gray-300">Interpersonal Skills</h4>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="skill-tag bg-gray-700 text-gray-200 px-3 py-1 rounded-full">Leadership</span>
+                        <span class="skill-tag bg-gray-700 text-gray-200 px-3 py-1 rounded-full">Teamwork</span>
+                        <span class="skill-tag bg-gray-700 text-gray-200 px-3 py-1 rounded-full">Problem-Solving</span>
+                        <span class="skill-tag bg-gray-700 text-gray-200 px-3 py-1 rounded-full">Adaptability</span>
+                        <span class="skill-tag bg-gray-700 text-gray-200 px-3 py-1 rounded-full">Quick Learner</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+    
+    <!-- Footer Section -->
+    <footer id="contact" class="py-12 px-4 md:px-12 border-t border-gray-800 reveal">
+        <div class="max-w-4xl mx-auto text-center">
+            <h3 class="text-3xl font-bold mb-4">Get In Touch</h3>
+            <p class="text-gray-400 max-w-xl mx-auto mb-8">I'm currently open to new opportunities. Feel free to reach out for collaborations or just a friendly chat.</p>
+            <div class="flex justify-center items-center space-x-6 mb-8">
+                <a href="mailto:rahularyajii2002@gmail.com" class="text-gray-400 hover:text-white transition-transform hover:scale-110" title="Email">
+                    <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M22 6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6zm-2 0l-8 5-8-5h16zm0 12H4V8l8 5 8-5v10z"/></svg>
+                </a>
+                <a href="https://www.linkedin.com/in/rahul-arya-034214221" target="_blank" class="text-gray-400 hover:text-white transition-transform hover:scale-110" title="LinkedIn">
+                    <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                </a>
+                <a href="https://github.com/rahularya014" target="_blank" class="text-gray-400 hover:text-white transition-transform hover:scale-110" title="GitHub">
+                    <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                </a>
+            </div>
+             <a href="mailto:rahularyajii2002@gmail.com?subject=Resume%20Request%_20from%20Portfolio" class="inline-block px-8 py-3 bg-red-600 text-white font-bold rounded hover:bg-red-700 transition-transform hover:scale-105">Request Resume</a>
+             <p class="text-gray-500 mt-8">&copy; 2024 Rahul Arya. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Project Detail Modal -->
+    <div id="project-modal" class="modal fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center p-4 hidden opacity-0">
+        <div class="bg-[#181818] rounded-lg max-w-2xl w-full overflow-hidden">
+            <div class="relative">
+                <img id="modal-image" src="" alt="Project Image" class="w-full h-64 object-cover">
+                <button id="close-project-modal" class="absolute top-2 right-2 text-white bg-black bg-opacity-50 rounded-full p-2 text-2xl leading-none">&times;</button>
+            </div>
+            <div class="p-6">
+                <h3 id="modal-title" class="text-2xl font-bold mb-2"></h3>
+                <p id="modal-description" class="text-gray-300 mb-4"></p>
+                <a id="modal-link" href="#" target="_blank" class="inline-block px-6 py-2 bg-red-600 text-white font-bold rounded hover:bg-red-700 transition-colors">View Project</a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- AI Summary Modal -->
+    <div id="ai-summary-modal" class="modal fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center p-4 hidden opacity-0">
+        <div class="bg-[#181818] rounded-lg max-w-lg w-full">
+            <div class="p-4 border-b border-gray-700 flex justify-between items-center">
+                <h3 id="ai-summary-title" class="text-xl font-bold text-red-500">AI Summary</h3>
+                <button id="close-ai-summary-modal" class="text-white text-2xl">&times;</button>
+            </div>
+            <div id="ai-summary-content" class="p-6 text-gray-300">
+                <!-- AI content will be injected here -->
+            </div>
+        </div>
+    </div>
+
+
+    <!-- AI Assistant Modal -->
+    <div id="ai-modal" class="modal fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center p-4 hidden opacity-0">
+        <div class="bg-[#181818] rounded-lg max-w-lg w-full flex flex-col h-[70vh]">
+            <div class="p-4 border-b border-gray-700 flex justify-between items-center">
+                <h3 class="text-xl font-bold">Rahul's Personal Assistant</h3>
+                <button id="close-ai-modal" class="text-white text-2xl">&times;</button>
+            </div>
+            <div id="ai-chat-box" class="flex-grow p-4 overflow-y-auto space-y-4">
+                <div class="ai-chat-bubble p-3 bg-gray-700 rounded-lg max-w-xs">
+                    <p>Hello! I'm Rahul's personal assistant. Ask me anything about his skills, projects, or experience.</p>
+                </div>
+            </div>
+            <div class="p-4 border-t border-gray-700 flex items-center">
+                <input type="text" id="ai-input" class="flex-grow bg-gray-700 rounded-l-md p-3 focus:outline-none" placeholder="e.g., 'Tell me about his internships.'">
+                <button id="ai-send-btn" class="bg-red-600 text-white font-bold px-6 py-3 rounded-r-md">Send</button>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Navbar scroll effect
+            const nav = document.getElementById('top-nav');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    nav.classList.add('scrolled');
                 } else {
-                    setCmdKOpen(prev => !prev);
+                    nav.classList.remove('scrolled');
+                }
+            });
+            
+            // Header background parallax effect
+            if (window.innerWidth > 768) {
+                const header = document.querySelector('.header-bg');
+                window.addEventListener('mousemove', (e) => {
+                    const { clientX, clientY } = e;
+                    const x = (clientX / window.innerWidth - 0.5) * 40; // Intensity
+                    const y = (clientY / window.innerHeight - 0.5) * 40;
+
+                    header.style.backgroundPosition = `calc(50% + ${x}px) calc(50% + ${y}px)`;
+                });
+            }
+            
+            // 3D Card Tilt Effect
+            const cards = document.querySelectorAll('.card');
+            cards.forEach(card => {
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    const { width, height } = rect;
+                    const rotateX = (y / height - 0.5) * -15; // Intensity
+                    const rotateY = (x / width - 0.5) * 15;
+
+                    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+                });
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0)';
+                });
+            });
+
+            // --- Modal Logic ---
+            const projectModal = document.getElementById('project-modal');
+            const closeModalBtn = document.getElementById('close-project-modal');
+            const aiSummaryModal = document.getElementById('ai-summary-modal');
+            const closeAiSummaryModalBtn = document.getElementById('close-ai-summary-modal');
+            let activeCard = null;
+            
+            // --- Project/Experience Detail Modal ---
+            document.querySelectorAll('.card').forEach(card => {
+                // Main card click (not the AI icon)
+                card.addEventListener('click', (e) => {
+                    if (e.target.closest('.ai-summary-icon')) return; // Ignore clicks on the AI icon
+                    
+                    if(activeCard) activeCard.classList.remove('active');
+                    
+                    document.getElementById('modal-title').textContent = card.dataset.title;
+                    document.getElementById('modal-description').textContent = card.dataset.description;
+                    document.getElementById('modal-image').src = card.dataset.image;
+                    const modalLink = document.getElementById('modal-link');
+                    
+                    if (card.dataset.link && card.dataset.link !== '#') {
+                       modalLink.href = card.dataset.link;
+                       modalLink.style.display = 'inline-block';
+                    } else {
+                       modalLink.style.display = 'none';
+                    }
+                    
+                    card.classList.add('active');
+                    activeCard = card;
+
+                    projectModal.classList.remove('hidden');
+                    setTimeout(() => projectModal.classList.remove('opacity-0'), 10);
+                });
+            });
+
+            const closeProjectModal = () => {
+                projectModal.classList.add('opacity-0');
+                if(activeCard) activeCard.classList.remove('active');
+                activeCard = null;
+                setTimeout(() => projectModal.classList.add('hidden'), 300);
+            };
+
+            closeModalBtn.addEventListener('click', closeProjectModal);
+            projectModal.addEventListener('click', (e) => {
+                if (e.target === projectModal) closeProjectModal();
+            });
+
+
+            // --- AI Summary Modal ---
+            const apiKey = 'AQ.Ab8RN6IZEC3Z6Tu6VsLZrAWAFC1Sk2ixKKTXA7CAH9EZvC7ulQ';
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+            const aiSummaryContent = document.getElementById('ai-summary-content');
+            const aiSummaryTitle = document.getElementById('ai-summary-title');
+
+            document.querySelectorAll('.ai-summary-icon').forEach(icon => {
+                icon.addEventListener('click', async (e) => {
+                    e.stopPropagation(); // Prevent main card click
+                    const card = icon.closest('.card');
+                    const title = card.dataset.title;
+                    const description = card.dataset.description;
+
+                    aiSummaryTitle.textContent = `AI Summary: ${title}`;
+                    aiSummaryContent.innerHTML = '<div class="loading-spinner mx-auto"></div>';
+                    aiSummaryModal.classList.remove('hidden');
+                    setTimeout(() => aiSummaryModal.classList.remove('opacity-0'), 10);
+                    
+                    try {
+                        const prompt = `Provide a concise, professional, one-paragraph summary of the following experience or project titled "${title}". Details: ${description}`;
+                        const payload = { contents: [{ parts: [{ text: prompt }] }] };
+                        const response = await fetch(apiUrl, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(payload)
+                        });
+                        if (!response.ok) throw new Error('API request failed');
+                        const result = await response.json();
+                        const summary = result.candidates[0].content.parts[0].text;
+                        aiSummaryContent.innerHTML = `<p>${summary}</p>`;
+                    } catch (error) {
+                        aiSummaryContent.innerHTML = `<p>Sorry, the summary could not be generated at this time.</p>`;
+                        console.error("AI Summary Error:", error);
+                    }
+                });
+            });
+
+            const closeAiSummaryModal = () => {
+                aiSummaryModal.classList.add('opacity-0');
+                setTimeout(() => aiSummaryModal.classList.add('hidden'), 300);
+            };
+
+            closeAiSummaryModalBtn.addEventListener('click', closeAiSummaryModal);
+            aiSummaryModal.addEventListener('click', (e) => {
+                if (e.target === aiSummaryModal) closeAiSummaryModal();
+            });
+
+
+            // --- Main AI Assistant Modal ---
+            const aiModal = document.getElementById('ai-modal');
+            const openAiModalBtn = document.getElementById('ai-assistant-btn');
+            const closeAiModalBtn = document.getElementById('close-ai-modal');
+            const aiSendBtn = document.getElementById('ai-send-btn');
+            const aiInput = document.getElementById('ai-input');
+            const aiChatBox = document.getElementById('ai-chat-box');
+
+            const openAiModal = () => {
+                aiModal.classList.remove('hidden');
+                setTimeout(() => aiModal.classList.remove('opacity-0'), 10);
+            }
+            
+            const closeAiModal = () => {
+                aiModal.classList.add('opacity-0');
+                setTimeout(() => aiModal.classList.add('hidden'), 300);
+            }
+
+            openAiModalBtn.addEventListener('click', openAiModal);
+            closeAiModalBtn.addEventListener('click', closeAiModal);
+            
+            const addMessageToChat = (message, sender) => {
+                const bubble = document.createElement('div');
+                bubble.classList.add('ai-chat-bubble', 'p-3', 'rounded-lg', 'max-w-md');
+                if (sender === 'user') {
+                    bubble.classList.add('bg-red-600', 'self-end', 'ml-auto');
+                } else {
+                    bubble.classList.add('bg-gray-700', 'self-start');
+                }
+                bubble.innerHTML = message;
+                aiChatBox.appendChild(bubble);
+                aiChatBox.scrollTop = aiChatBox.scrollHeight;
+            };
+            
+            function formatAIResponse(text) {
+                let html = text
+                    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                    .replace(/^- (.*$)/gm, '<li>$1</li>');
+                if (html.includes('<li>')) {
+                    html = '<ul>' + html.replace(/<\/li>\n<li>/g, '</li><li>') + '</ul>';
+                    html = html.replace(/<\/li><ul>/g, '</li></ul><ul>').replace(/<\/ul><li>/g, '</ul><ul><li>');
+                }
+                return html.replace(/\n/g, '<br>');
+            }
+
+            const handleAIChat = async () => {
+                const userQuery = aiInput.value.trim();
+                if (!userQuery) return;
+
+                addMessageToChat(`<p>${userQuery}</p>`, 'user');
+                aiInput.value = '';
+                addMessageToChat('<div class="loading-spinner"></div>', 'ai');
+
+                try {
+                    const portfolioContext = `
+                        **Personal Information:**
+                        Name: Rahul Arya
+                        Email: rahularyajii2002@gmail.com
+                        **Education:** M.A. Economics from Delhi School of Economics (2024-2026); B.A. (H) Economics from University of Delhi (2023).
+                        **Achievements:** Secured AIR 66 in IIT Delhi M.Sc. Economics Entrance Exam (2024).
+                        **Internships:** Credit Risk Modelling at Central Bank of India (2025); Product Manager & Marketing at Beyondriffs (2024).
+                        **Projects:** Predicting Farmers’ Income, Credit Card Fraud Detection, AI-Powered Supply Chain Analytics, COVID-19 Economic Impact.
+                        **Skills:** Python, Machine Learning (ML), MySQL, Power BI, XGBoost, Keras, Leadership, Teamwork.
+                        **Certifications:** Data Analysis by Microsoft/LinkedIn, Power BI, MySQL, Python.
+                    `;
+
+                    const systemPrompt = `You are Rahul Arya's personal AI assistant. Answer questions based ONLY on the provided context. Be professional and concise. Ignore personal contact details. If the answer isn't in the context, say so. Context: ${portfolioContext}`;
+                    
+                    const payload = {
+                        contents: [{ parts: [{ text: userQuery }] }],
+                        systemInstruction: { parts: [{ text: systemPrompt }] },
+                    };
+
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (!response.ok) throw new Error(`API error: ${response.statusText}`);
+                    
+                    const result = await response.json();
+                    const aiResponse = result.candidates[0].content.parts[0].text;
+                    const loadingBubble = aiChatBox.querySelector('.loading-spinner').parentElement;
+                    loadingBubble.innerHTML = formatAIResponse(aiResponse);
+                    aiChatBox.scrollTop = aiChatBox.scrollHeight;
+                } catch (error) {
+                    const loadingBubble = aiChatBox.querySelector('.loading-spinner').parentElement;
+                    loadingBubble.innerHTML = `<p>Sorry, I'm having trouble connecting right now.</p>`;
+                    console.error('AI Chat Error:', error);
                 }
             };
 
-            // Prevent scrolling when command palette is open
-            useEffect(() => {
-                if (cmdKOpen) {
-                    document.body.style.overflow = 'hidden';
-                } else {
-                    document.body.style.overflow = 'unset';
-                }
-            }, [cmdKOpen]);
-
-            useEffect(() => {
-                // Initialize Lucide icons after render
-                if (window.lucide) {
-                    window.lucide.createIcons();
-                }
+            aiSendBtn.addEventListener('click', handleAIChat);
+            aiInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') handleAIChat();
             });
 
-            return (
-                <div className="antialiased selection:bg-accent/30 selection:text-white min-h-screen flex flex-col relative">
-                    <BackgroundEffects />
-                    <CommandPalette isOpen={cmdKOpen} onClose={() => setCmdKOpen(false)} />
-                    
-                    <Navbar toggleCmdK={toggleCmdK} />
-                    
-                    <main className="flex-grow">
-                        <Hero toggleCmdK={toggleCmdK} />
-                        <About />
-                        <Experience />
-                        <Projects />
-                        <EducationAndAchievements />
-                        <Contact />
-                    </main>
+            // Scroll reveal animations
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) entry.target.classList.add('visible');
+                });
+            }, { threshold: 0.1 });
 
-                    <Footer />
-                </div>
-            );
-        };
-
-        // Render Application
-        const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<App />);
+            document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+        });
     </script>
 </body>
 </html>
+
+
