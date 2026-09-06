@@ -92,12 +92,13 @@
             height: 100vh;
             pointer-events: none;
             z-index: 50;
-            opacity: 0.025;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: 0.08; /* Slightly stronger noise for a frosted liquid glass vibe */
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            mix-blend-mode: overlay;
         }
 
-        /* Atmospheric Glow Layers */
-        .glow-container {
+        /* Fluid / Water-Type Ambient Background */
+        .ambient-container {
             position: fixed;
             top: 0;
             left: 0;
@@ -106,36 +107,87 @@
             pointer-events: none;
             z-index: 0;
             overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            background-color: #030001; /* Deepest almost-black */
         }
 
-        .glow-layer-1 {
+        .liquid-wrapper {
             position: absolute;
-            width: 120vw;
-            height: 120vh;
-            background: radial-gradient(ellipse at 50% 30%, rgba(255, 30, 80, 0.12), transparent 60%);
-            filter: blur(80px);
+            top: 50%;
+            left: 50%;
+            width: 140vw; /* Oversized to prevent edges showing */
+            height: 140vh;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 0;
+            filter: blur(90px); /* Huge blur for the liquid merge effect */
+        }
+
+        .liquid-blob {
+            position: absolute;
             mix-blend-mode: screen;
+            animation: fluidMorph 25s ease-in-out infinite alternate;
+            opacity: 0.7;
         }
 
-        .glow-layer-2 {
-            position: absolute;
-            width: 80vw;
-            height: 80vh;
-            background: radial-gradient(circle at 50% 40%, rgba(150, 20, 100, 0.08), transparent 50%);
-            filter: blur(60px);
-        }
-        
-        .glow-layer-3 {
-            position: absolute;
-            top: -20%;
+        /* Front Layer Liquid */
+        .blob-1 {
+            width: 55vw;
+            height: 55vw;
+            background: radial-gradient(circle, rgba(255,42,95,0.8) 0%, transparent 70%);
+            top: 10%;
             left: 10%;
+            animation-delay: 0s;
+            transform-origin: center;
+        }
+
+        .blob-2 {
+            width: 65vw;
+            height: 65vw;
+            background: radial-gradient(circle, rgba(128,0,28,0.9) 0%, transparent 70%);
+            bottom: 10%;
+            right: 10%;
+            animation-delay: -5s;
+            transform-origin: top left;
+        }
+
+        /* Deep Layer Liquid (for depth) */
+        .blob-3 {
             width: 60vw;
-            height: 60vh;
-            background: radial-gradient(circle, rgba(60, 20, 150, 0.05), transparent 60%);
-            filter: blur(100px);
+            height: 60vw;
+            background: radial-gradient(circle, rgba(255,0,55,0.6) 0%, transparent 70%);
+            top: 40%;
+            left: 40%;
+            animation-delay: -10s;
+            transform-origin: bottom right;
+        }
+
+        .blob-4 {
+            width: 75vw;
+            height: 75vw;
+            background: radial-gradient(circle, rgba(16,83,255,0.35) 0%, transparent 70%); /* Deep blue for liquid shadows */
+            bottom: -15%;
+            left: -15%;
+            animation-delay: -15s;
+            transform-origin: center;
+        }
+
+        @keyframes fluidMorph {
+            0% {
+                border-radius: 40% 60% 70% 30% / 40% 40% 60% 50%;
+                transform: translate(0, 0) rotate(0deg) scale(1);
+            }
+            33% {
+                border-radius: 70% 30% 50% 50% / 30% 30% 70% 70%;
+                transform: translate(8vw, -8vh) rotate(120deg) scale(1.1);
+            }
+            66% {
+                border-radius: 100% 60% 60% 100% / 100% 100% 60% 60%;
+                transform: translate(-8vw, 10vh) rotate(240deg) scale(0.9);
+            }
+            100% {
+                border-radius: 40% 60% 70% 30% / 40% 40% 60% 50%;
+                transform: translate(0, 0) rotate(360deg) scale(1);
+            }
         }
 
         /* Glass UI Utilities */
@@ -255,6 +307,7 @@
                     title: "Predicting Farmers Income in India",
                     instructor: "Asst. Prof. Rachit Saini",
                     year: "2025",
+                    demoLink: "https://rahularya014.github.io/Farmer-income-Demo/",
                     metrics: [
                         { value: "0.7513", label: "R² Score" },
                         { value: "48K+", label: "Records" }
@@ -268,6 +321,7 @@
                     title: "Offer Engagement Forecasting Model",
                     instructor: "Amex Campus Challenge",
                     year: "2025",
+                    demoLink: "https://rahularya014.github.io/Predictive-Modeling-for-Customer-Engagement-with-Offers-using-AMEX-Data-/",
                     metrics: [
                         { value: "0.82", label: "AUC" },
                         { value: "78%", label: "Precision" }
@@ -294,26 +348,22 @@
                 {
                     degree: "M.A. Economics",
                     institution: "Delhi School of Economics, University of Delhi",
-                    year: "2024–2026",
-                    score: "6.063 CGPA"
+                    year: "2024–2026"
                 },
                 {
                     degree: "B.A. (H) Economics",
                     institution: "Satyawati College, University of Delhi",
-                    year: "2020–2023",
-                    score: "7.378 CGPA"
+                    year: "2020–2023"
                 },
                 {
                     degree: "Class XII (CBSE)",
                     institution: "Millia Convent English School, Purnia",
-                    year: "2020",
-                    score: "80.20%"
+                    year: "2020"
                 },
                 {
                     degree: "Class X (CBSE)",
                     institution: "Millia Convent English School, Purnia",
-                    year: "2018",
-                    score: "76.40%"
+                    year: "2018"
                 }
             ],
             achievements: [
@@ -358,34 +408,68 @@
         // --- COMPONENTS ---
 
         const BackgroundEffects = () => {
-            const [mousePos, setMousePos] = useState({ x: -1000, y: -1000 });
+            const { motion, useMotionValue, useSpring, useTransform, useMotionTemplate } = window.Motion;
+
+            // Values for parallax motion sensor tracking
+            const mouseX = useMotionValue(0);
+            const mouseY = useMotionValue(0);
             
+            // Values for the spotlight (center of screen by default)
+            const windowX = useMotionValue(typeof window !== 'undefined' ? window.innerWidth / 2 : 500);
+            const windowY = useMotionValue(typeof window !== 'undefined' ? window.innerHeight / 2 : 500);
+
+            // Smooth spring config for a premium software feel. Heavier mass for "liquid" feel.
+            const springConfig = { damping: 50, stiffness: 200, mass: 1 };
+            const smoothX = useSpring(mouseX, springConfig);
+            const smoothY = useSpring(mouseY, springConfig);
+
+            // Parallax movement ranges based on mouse position
+            const translateX = useTransform(smoothX, [-0.5, 0.5], [60, -60]);
+            const translateY = useTransform(smoothY, [-0.5, 0.5], [60, -60]);
+            
+            // Inverse movement for deeper fluid layers to create parallax depth
+            const translateXInverse = useTransform(smoothX, [-0.5, 0.5], [-40, 40]);
+            const translateYInverse = useTransform(smoothY, [-0.5, 0.5], [-40, 40]);
+
             useEffect(() => {
                 const handleMouseMove = (e) => {
-                    // Only update on desktop for performance
                     if(window.innerWidth > 768) {
-                        setMousePos({ x: e.clientX, y: e.clientY });
+                        // Normalize mouse coordinates to a -0.5 to +0.5 range
+                        mouseX.set(e.clientX / window.innerWidth - 0.5);
+                        mouseY.set(e.clientY / window.innerHeight - 0.5);
+                        windowX.set(e.clientX);
+                        windowY.set(e.clientY);
                     }
                 };
                 window.addEventListener('mousemove', handleMouseMove);
                 return () => window.removeEventListener('mousemove', handleMouseMove);
-            }, []);
+            }, [mouseX, mouseY, windowX, windowY]);
+
+            const spotlightStyle = useMotionTemplate`radial-gradient(600px circle at ${windowX}px ${windowY}px, rgba(255, 255, 255, 0.03), transparent 80%)`;
 
             return (
                 <>
-                    <div className="bg-noise"></div>
-                    <div className="glow-container animate-breathe-slow">
-                        <div className="glow-layer-1"></div>
-                        <div className="glow-layer-2"></div>
-                        <div className="glow-layer-3"></div>
+                    <div className="ambient-container">
+                        <div className="liquid-wrapper">
+                            {/* Layer 1: Front liquid */}
+                            <motion.div style={{ x: translateX, y: translateY }} className="absolute inset-0 w-full h-full">
+                                <div className="liquid-blob blob-1"></div>
+                                <div className="liquid-blob blob-2"></div>
+                            </motion.div>
+                            
+                            {/* Layer 2: Deep liquid (moves opposite for depth) */}
+                            <motion.div style={{ x: translateXInverse, y: translateYInverse }} className="absolute inset-0 w-full h-full">
+                                <div className="liquid-blob blob-3"></div>
+                                <div className="liquid-blob blob-4"></div>
+                            </motion.div>
+                        </div>
                     </div>
+                    <div className="bg-noise"></div>
                     {/* Mouse Spotlight */}
-                    <div 
-                        className="fixed inset-0 pointer-events-none z-10 transition-opacity duration-300 hidden md:block"
-                        style={{
-                            background: `radial-gradient(400px circle at ${mousePos.x}px ${mousePos.y}px, rgba(255, 42, 95, 0.04), transparent 80%)`
-                        }}
-                    ></div>
+                    <motion.div 
+                        className="fixed inset-0 pointer-events-none z-10 hidden md:block"
+                        style={{ background: spotlightStyle }}
+                    ></motion.div>
                 </>
             );
         };
@@ -402,6 +486,70 @@
                 {subtitle && <p className="text-textSecondary text-lg md:text-xl">{subtitle}</p>}
             </motion.div>
         );
+
+        const AnimatedBoy = () => {
+            const { motion } = window.Motion;
+            return (
+                <div className="w-9 h-9 relative flex items-center justify-center" style={{ perspective: '500px' }}>
+                    <motion.div
+                        animate={{
+                            y: [-1, 1.5, -1],
+                            rotateY: [-15, 15, -15],
+                            rotateX: [5, -5, 5]
+                        }}
+                        transition={{
+                            duration: 5,
+                            repeat: Infinity,
+                            ease: "easeInOut"
+                        }}
+                        className="w-full h-full"
+                        style={{ transformStyle: 'preserve-3d' }}
+                    >
+                        <svg viewBox="0 0 100 100" className="w-full h-full drop-shadow-md overflow-visible">
+                            <defs>
+                                <radialGradient id="skin3D" cx="35%" cy="35%" r="65%">
+                                    <stop offset="0%" stopColor="#ffdeb5" />
+                                    <stop offset="70%" stopColor="#e2aa7b" />
+                                    <stop offset="100%" stopColor="#c58c5f" />
+                                </radialGradient>
+                                <radialGradient id="hair3D" cx="40%" cy="20%" r="80%">
+                                    <stop offset="0%" stopColor="#374151" />
+                                    <stop offset="50%" stopColor="#111827" />
+                                    <stop offset="100%" stopColor="#000000" />
+                                </radialGradient>
+                                <linearGradient id="goggles" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stopColor="#ff2a5f" />
+                                    <stop offset="50%" stopColor="#c50030" />
+                                    <stop offset="100%" stopColor="#6b0015" />
+                                </linearGradient>
+                                <linearGradient id="reflection" x1="0%" y1="0%" x2="0%" y2="100%">
+                                    <stop offset="0%" stopColor="rgba(255,255,255,0.8)" />
+                                    <stop offset="100%" stopColor="rgba(255,255,255,0)" />
+                                </linearGradient>
+                            </defs>
+                            
+                            {/* Back Hair */}
+                            <ellipse cx="50" cy="45" rx="38" ry="40" fill="url(#hair3D)" />
+                            {/* Face Base */}
+                            <circle cx="50" cy="55" r="32" fill="url(#skin3D)" />
+                            {/* Front Hair Sweeps */}
+                            <path d="M 20 45 Q 40 10 75 30 Q 82 40 85 50 Q 75 15 45 15 Q 15 25 15 50 Z" fill="url(#hair3D)" />
+                            {/* Ears */}
+                            <circle cx="18" cy="55" r="6" fill="url(#skin3D)" />
+                            <circle cx="82" cy="55" r="6" fill="url(#skin3D)" />
+                            {/* Tech Goggles */}
+                            <rect x="22" y="42" width="56" height="18" rx="6" fill="url(#goggles)" />
+                            <rect x="24" y="44" width="52" height="8" rx="4" fill="url(#reflection)" opacity="0.6" />
+                            {/* Goggle Eyes */}
+                            <circle cx="35" cy="51" r="2.5" fill="#fff" />
+                            <circle cx="65" cy="51" r="2.5" fill="#fff" />
+                            {/* Smile */}
+                            <path d="M 42 72 Q 50 78 58 72" fill="none" stroke="#b07050" strokeWidth="2.5" strokeLinecap="round" />
+                        </svg>
+                    </motion.div>
+                </div>
+            );
+        };
 
         const CommandPalette = ({ isOpen, onClose }) => {
             const [search, setSearch] = useState("");
@@ -546,10 +694,8 @@
                     <div className="max-w-6xl mx-auto px-6">
                         <div className={`flex items-center justify-between rounded-2xl transition-all duration-500 ${scrolled ? 'glass-panel px-6 py-3' : 'px-2 py-2'}`}>
                             
-                            <a href="#" className="font-semibold text-lg tracking-tight flex items-center gap-2 group">
-                                <div className="w-8 h-8 rounded-full bg-accent/20 flex items-center justify-center border border-accent/30 group-hover:bg-accent/30 transition-colors">
-                                    <span className="text-accent font-bold">R</span>
-                                </div>
+                            <a href="#" className="font-semibold text-lg tracking-tight flex items-center gap-3 group">
+                                <AnimatedBoy />
                                 <span className="hidden sm:block">Rahul Arya</span>
                             </a>
 
@@ -585,83 +731,48 @@
 
         const Hero = ({ toggleCmdK }) => {
             return (
-                <section className="relative min-h-screen flex items-center pt-32 pb-20 overflow-hidden">
-                    <div className="max-w-6xl mx-auto px-6 w-full relative z-10 flex flex-col items-center text-center">
-                        
-                        <motion.div 
+                <section className="relative min-h-screen flex items-center justify-center pt-32 pb-16 px-6 overflow-hidden">
+                    <div className="relative z-10 w-full max-w-4xl mx-auto flex flex-col items-center text-center">
+                        <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.8, ease: "easeOut" }}
-                            className="inline-block mb-6 px-4 py-1.5 rounded-full border border-accent/20 bg-accent/5 text-accent text-xs font-semibold tracking-wider"
+                            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
                         >
-                            ECONOMICS • DATA • MACHINE LEARNING • AI
+                            <span className="text-[10px] sm:text-xs font-bold tracking-[0.2em] text-accent uppercase mb-6 block">
+                                Economics • Data • Machine Learning • AI
+                            </span>
+                            <h1 className="text-5xl sm:text-7xl md:text-[100px] font-bold tracking-tighter text-white mb-6 leading-none">
+                                Rahul Arya
+                            </h1>
+                            <p className="text-lg sm:text-xl text-textSecondary max-w-2xl mx-auto mb-10 leading-relaxed font-light">
+                                {CV_DATA.personal.summary}
+                            </p>
+                            <div className="flex flex-col sm:flex-row items-center gap-4 justify-center mb-16">
+                                <a href="#projects" className="w-full sm:w-auto px-6 py-3 rounded-xl bg-white text-black font-semibold hover:bg-gray-200 transition-all active:scale-95 flex items-center justify-center gap-2">
+                                    Explore my work <Icons.ArrowRight />
+                                </a>
+                                <a href="https://drive.google.com/file/d/18_KUEYu-EROBhBy8cNGaeHZW7e_tDOQo/view?usp=drive_link" target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto px-6 py-3 rounded-xl bg-surface border border-white/10 text-white font-medium hover:bg-white/5 transition-all active:scale-95 flex items-center justify-center gap-2 group">
+                                    <Icons.FileText /> View CV
+                                </a>
+                            </div>
                         </motion.div>
 
-                        <motion.h1 
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
-                            className="text-5xl md:text-7xl lg:text-[100px] font-bold tracking-tighter mb-6 leading-tight"
-                        >
-                            Rahul Arya
-                        </motion.h1>
-
-                        <motion.p 
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ duration: 1, delay: 0.3 }}
-                            className="text-lg md:text-xl text-textSecondary max-w-2xl mb-10 leading-relaxed"
-                        >
-                            Bridging complex economic theory with advanced data science. Specializing in credit risk modelling, statistical analysis, and autonomous AI systems.
-                        </motion.p>
-
-                        <motion.div 
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.5, delay: 0.5 }}
-                            className="flex flex-col sm:flex-row gap-4 mb-20"
-                        >
-                            <a href="#projects" className="px-6 py-3 rounded-xl bg-white text-black font-semibold hover:bg-gray-200 transition-all active:scale-95 flex items-center justify-center gap-2">
-                                Explore my work <Icons.ArrowRight />
-                            </a>
-                            <a href="Rahul Arya.pdf" target="_blank" className="px-6 py-3 rounded-xl bg-surface border border-white/10 text-white font-medium hover:bg-surfaceHover transition-all active:scale-95 flex items-center justify-center gap-2">
-                                View CV <Icons.FileText />
-                            </a>
-                        </motion.div>
-
-                        {/* Mock Command Interface Visual */}
-                        <motion.div 
+                        <motion.div
                             initial={{ opacity: 0, y: 40 }}
                             animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 1, delay: 0.7, ease: [0.16, 1, 0.3, 1] }}
-                            className="w-full max-w-3xl glass-panel rounded-2xl p-4 md:p-6 shadow-2xl relative group cursor-pointer animate-float-slow"
-                            onClick={toggleCmdK}
+                            transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                            className="w-full max-w-2xl glass-panel rounded-2xl overflow-hidden p-2 relative cursor-pointer group"
+                            onClick={() => toggleCmdK(true)}
                         >
-                            {/* Inner highlight */}
-                            <div className="absolute inset-0 rounded-2xl bg-gradient-to-b from-white/5 to-transparent pointer-events-none"></div>
-                            
-                            <div className="flex items-center gap-3 px-4 py-3 bg-black/40 rounded-lg border border-white/5 mb-6 group-hover:border-white/10 transition-colors">
+                            <div className="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                            <div className="flex items-center px-4 py-3 border-b border-white/5 opacity-70">
                                 <Icons.Search />
-                                <span className="text-textSecondary text-sm">Explore portfolio commands...</span>
-                                <div className="ml-auto flex gap-1">
-                                    <kbd className="px-2 py-1 rounded bg-white/10 text-xs font-sans">⌘</kbd>
-                                    <kbd className="px-2 py-1 rounded bg-white/10 text-xs font-sans">K</kbd>
-                                </div>
+                                <span className="ml-3 text-textTertiary text-sm">Search Rahul's work...</span>
+                                <div className="ml-auto text-xs text-textTertiary bg-white/5 px-2 py-1 rounded">⌘K</div>
                             </div>
-
-                            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-left">
-                                {[
-                                    { icon: Icons.TerminalSquare, label: "Projects", desc: "4 deep dives" },
-                                    { icon: Icons.Briefcase, label: "Experience", desc: "Risk & Product" },
-                                    { icon: Icons.Code, label: "Skills", desc: "ML, Data, Cloud" },
-                                    { icon: Icons.Award, label: "Achievements", desc: "Competitions" }
-                                ].map((item, i) => (
-                                    <div key={i} className="p-3 rounded-xl hover:bg-white/5 transition-colors border border-transparent hover:border-white/5">
-                                        <div className="mb-2">{item.icon()}</div>
-                                        <div className="text-sm font-medium text-white mb-0.5">{item.label}</div>
-                                        <div className="text-xs text-textTertiary">{item.desc}</div>
-                                    </div>
-                                ))}
+                            <div className="p-2 space-y-1 opacity-50">
+                                <div className="flex items-center p-2 rounded-lg bg-white/5"><Icons.Briefcase /><span className="ml-3 text-sm text-textSecondary">Experience</span></div>
+                                <div className="flex items-center p-2 rounded-lg"><Icons.Code /><span className="ml-3 text-sm text-textSecondary">Projects</span></div>
                             </div>
                         </motion.div>
                     </div>
@@ -670,46 +781,34 @@
         };
 
         const About = () => {
+            const skills = Object.values(CV_DATA.skills).flat();
             return (
                 <section id="about" className="py-24 relative z-10">
                     <div className="max-w-6xl mx-auto px-6">
-                        <SectionHeader title="About" subtitle="Economics driven by computation." />
-                        
-                        <div className="grid md:grid-cols-2 gap-12 lg:gap-24 items-start">
+                        <SectionHeader title="About" />
+                        <div className="grid md:grid-cols-2 gap-12 items-start">
                             <motion.div 
                                 initial={{ opacity: 0, x: -20 }}
                                 whileInView={{ opacity: 1, x: 0 }}
                                 viewport={{ once: true }}
                                 transition={{ duration: 0.6 }}
-                                className="space-y-6 text-lg text-textSecondary leading-relaxed"
                             >
-                                <p>
-                                    I am an economics postgraduate combining rigorous statistical theory with modern machine learning techniques. My focus lies at the intersection of predictive modelling and business strategy.
-                                </p>
-                                <p>
-                                    Currently, I specialize in <strong className="text-white font-medium">credit risk modelling</strong>, utilizing advanced tree-based models and deep learning to assess financial vulnerability. I am also deeply interested in AI automation and agentic workflows for operational efficiency.
+                                <p className="text-textSecondary text-lg leading-relaxed font-light">
+                                    I am an Economics postgraduate merging the worlds of rigorous statistical modeling and modern AI architecture. My focus lies at the intersection of credit risk analytics, agentic AI, and scalable machine learning pipelines, transforming complex datasets into reliable, automated insights.
                                 </p>
                             </motion.div>
-
                             <motion.div 
                                 initial={{ opacity: 0, x: 20 }}
                                 whileInView={{ opacity: 1, x: 0 }}
                                 viewport={{ once: true }}
-                                transition={{ duration: 0.6, delay: 0.2 }}
+                                transition={{ duration: 0.6 }}
+                                className="flex flex-wrap gap-3"
                             >
-                                <div className="glass-panel p-6 rounded-2xl">
-                                    <h3 className="text-sm font-semibold text-textTertiary uppercase tracking-wider mb-6">Core Capabilities</h3>
-                                    <div className="flex flex-wrap gap-2">
-                                        {CV_DATA.skills.Programming.concat(CV_DATA.skills.AI_ML.slice(0, 4)).map((skill, i) => (
-                                            <span 
-                                                key={i} 
-                                                className="px-4 py-2 rounded-lg bg-surface border border-white/5 text-sm font-medium hover:bg-white/10 hover:border-white/20 transition-all cursor-default hover:-translate-y-0.5 hover:text-accent shadow-sm"
-                                            >
-                                                {skill}
-                                            </span>
-                                        ))}
-                                    </div>
-                                </div>
+                                {skills.map(skill => (
+                                    <span key={skill} className="px-4 py-2 rounded-full bg-surface border border-borderSubtle text-sm text-textSecondary hover:text-white hover:border-borderHover hover:bg-white/10 transition-colors cursor-default">
+                                        {skill}
+                                    </span>
+                                ))}
                             </motion.div>
                         </div>
                     </div>
@@ -721,49 +820,37 @@
             return (
                 <section id="experience" className="py-24 relative z-10">
                     <div className="max-w-6xl mx-auto px-6">
-                        <SectionHeader title="Experience" subtitle="Professional trajectory." />
-                        
-                        <div className="space-y-12 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-px before:bg-gradient-to-b before:from-transparent before:via-white/10 before:to-transparent">
-                            {CV_DATA.experience.map((exp, index) => (
+                        <SectionHeader title="Experience" />
+                        <div className="space-y-12 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-[1px] before:bg-gradient-to-b before:from-transparent before:via-white/10 before:to-transparent">
+                            {CV_DATA.experience.map((exp, i) => (
                                 <motion.div 
-                                    key={exp.id}
+                                    key={exp.id} 
                                     initial={{ opacity: 0, y: 20 }}
                                     whileInView={{ opacity: 1, y: 0 }}
-                                    viewport={{ once: true, margin: "-100px" }}
-                                    transition={{ duration: 0.6, delay: index * 0.1 }}
-                                    className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active"
+                                    viewport={{ once: true, margin: "-50px" }}
+                                    transition={{ duration: 0.5, delay: i * 0.1 }}
+                                    className="relative flex flex-col md:flex-row items-start md:items-center justify-between md:odd:flex-row-reverse group"
                                 >
-                                    {/* Timeline Marker */}
-                                    <div className="flex items-center justify-center w-10 h-10 rounded-full border border-white/10 bg-surface shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 shadow shadow-black/50 group-hover:border-accent/50 group-hover:bg-accent/10 transition-colors z-10 ml-0 md:ml-0">
-                                        <div className="w-2 h-2 rounded-full bg-textTertiary group-hover:bg-accent transition-colors"></div>
+                                    <div className="flex items-center justify-center w-10 h-10 rounded-full border border-white/10 bg-surface absolute left-0 md:left-1/2 -translate-x-1/2 shrink-0 group-hover:border-accent group-hover:text-accent transition-colors z-10">
+                                        <Icons.Briefcase />
                                     </div>
-
-                                    {/* Content Card */}
-                                    <div className="w-[calc(100%-4rem)] md:w-[calc(50%-3rem)] premium-card rounded-2xl p-6 md:p-8">
-                                        <div className="flex flex-col md:flex-row md:items-center justify-between mb-4 gap-2">
-                                            <div>
-                                                <h3 className="text-xl font-bold text-white tracking-tight">{exp.role}</h3>
-                                                <div className="text-accent font-medium">{exp.company}</div>
-                                            </div>
-                                            <div className="inline-block px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-medium text-textSecondary self-start md:self-auto">
-                                                {exp.year}
-                                            </div>
+                                    <div className="w-[calc(100%-4rem)] md:w-[calc(50%-3rem)] ml-auto md:ml-0 premium-card p-8 rounded-2xl group-hover:-translate-y-1">
+                                        <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-2">
+                                            <h3 className="text-xl font-bold text-white">{exp.role}</h3>
+                                            <span className="text-accent text-sm font-semibold bg-accent/10 px-3 py-1 rounded-full w-fit">{exp.year}</span>
                                         </div>
-                                        
+                                        <div className="text-textSecondary font-medium mb-6">{exp.company}</div>
                                         <ul className="space-y-3 mb-6">
-                                            {exp.details.map((detail, i) => (
-                                                <li key={i} className="text-sm text-textSecondary leading-relaxed flex gap-3">
-                                                    <span className="text-white/20 mt-1.5 shrink-0">•</span>
+                                            {exp.details.map((detail, j) => (
+                                                <li key={j} className="text-textTertiary text-sm flex gap-3 items-start leading-relaxed">
+                                                    <span className="text-white/20 mt-1 shrink-0"><Icons.ChevronRight /></span>
                                                     <span>{detail}</span>
                                                 </li>
                                             ))}
                                         </ul>
-
                                         <div className="flex flex-wrap gap-2 pt-4 border-t border-white/5">
                                             {exp.tags.map(tag => (
-                                                <span key={tag} className="text-xs font-medium text-textTertiary bg-black/50 px-2.5 py-1 rounded-md border border-white/5">
-                                                    {tag}
-                                                </span>
+                                                <span key={tag} className="text-xs px-2 py-1 rounded bg-white/5 text-textSecondary border border-white/5">{tag}</span>
                                             ))}
                                         </div>
                                     </div>
@@ -776,143 +863,181 @@
         };
 
         const Projects = () => {
+            const [selected, setSelected] = useState(null);
+            
+            useEffect(() => {
+                if (selected) document.body.style.overflow = 'hidden';
+                else document.body.style.overflow = 'unset';
+                return () => document.body.style.overflow = 'unset';
+            }, [selected]);
+
             return (
                 <section id="projects" className="py-24 relative z-10">
                     <div className="max-w-6xl mx-auto px-6">
-                        <SectionHeader title="Selected Work" subtitle="Models, analytics, and pipelines." />
-                        
-                        <div className="grid md:grid-cols-2 gap-6 lg:gap-8">
-                            {CV_DATA.projects.map((project, index) => (
+                        <SectionHeader title="Projects" subtitle="Selected analytical models & ML pipelines." />
+                        <div className="grid md:grid-cols-2 gap-6">
+                            {CV_DATA.projects.map((proj, idx) => (
                                 <motion.div 
-                                    key={project.id}
-                                    initial={{ opacity: 0, y: 30 }}
+                                    key={proj.id} 
+                                    initial={{ opacity: 0, y: 20 }}
                                     whileInView={{ opacity: 1, y: 0 }}
-                                    viewport={{ once: true, margin: "-50px" }}
-                                    transition={{ duration: 0.6, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
-                                    className="premium-card rounded-2xl p-8 flex flex-col group relative overflow-hidden h-full"
+                                    viewport={{ once: true }}
+                                    transition={{ duration: 0.5, delay: idx * 0.1 }}
+                                    className="premium-card p-8 rounded-2xl cursor-pointer group flex flex-col h-full" 
+                                    onClick={() => setSelected(proj)}
                                 >
-                                    {/* Decorative subtle gradient background on hover */}
-                                    <div className="absolute inset-0 bg-gradient-to-br from-accent/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
-                                    
-                                    <div className="flex justify-between items-start mb-8 relative z-10">
+                                    <div className="flex justify-between items-start mb-4">
                                         <div className="flex items-center gap-3">
-                                            <span className="text-xs font-mono text-textTertiary bg-white/5 px-2 py-1 rounded">0{index + 1}</span>
-                                            <span className="text-xs font-medium text-textTertiary border border-white/10 px-2 py-1 rounded-full">{project.year}</span>
+                                            <div className="text-xs font-mono text-accent bg-accent/10 px-2 py-1 rounded">PROJ_0{idx + 1}</div>
+                                            {proj.demoLink && (
+                                                <div className="flex items-center gap-1 text-[10px] font-bold tracking-wider uppercase text-white/70 bg-white/10 px-2 py-1 rounded">
+                                                    Demo
+                                                </div>
+                                            )}
                                         </div>
-                                        <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center border border-white/10 group-hover:bg-white/10 group-hover:-translate-y-1 group-hover:translate-x-1 transition-all">
-                                            <Icons.ArrowRight />
-                                        </div>
+                                        <span className="text-textTertiary text-sm">{proj.year}</span>
                                     </div>
-
-                                    <h3 className="text-2xl font-bold text-white tracking-tight mb-3 relative z-10 group-hover:text-accent transition-colors">{project.title}</h3>
+                                    <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-accent transition-colors">{proj.title}</h3>
+                                    <p className="text-textSecondary mb-8 flex-grow line-clamp-3">{proj.description}</p>
                                     
-                                    <p className="text-textSecondary text-sm leading-relaxed mb-8 flex-grow relative z-10">
-                                        {project.description}
-                                    </p>
-
-                                    {/* Metrics Block */}
-                                    <div className="grid grid-cols-2 gap-4 mb-8 relative z-10">
-                                        {project.metrics.map((metric, i) => (
-                                            <div key={i} className="bg-black/40 border border-white/5 rounded-xl p-4 flex flex-col justify-center">
-                                                <div className="text-2xl lg:text-3xl font-bold text-white tracking-tighter group-hover:scale-105 transition-transform origin-left">{metric.value}</div>
-                                                <div className="text-xs text-textTertiary uppercase tracking-wider font-semibold mt-1">{metric.label}</div>
+                                    <div className="grid grid-cols-2 gap-4 mb-6 pt-6 border-t border-white/5">
+                                        {proj.metrics.map(m => (
+                                            <div key={m.label} className="flex flex-col">
+                                                <span className="text-3xl font-bold text-white tracking-tight">{m.value}</span>
+                                                <span className="text-[10px] text-textTertiary uppercase tracking-widest mt-1">{m.label}</span>
                                             </div>
                                         ))}
                                     </div>
-
-                                    <div className="flex flex-wrap gap-2 mt-auto relative z-10">
-                                        {project.tags.map(tag => (
-                                            <span key={tag} className="text-xs text-textSecondary bg-surface border border-white/10 px-3 py-1.5 rounded-lg">
-                                                {tag}
-                                            </span>
+                                    <div className="flex flex-wrap gap-2">
+                                        {proj.tags.slice(0, 3).map(tag => (
+                                            <span key={tag} className="text-xs px-2 py-1 rounded bg-white/5 text-textSecondary border border-white/5">{tag}</span>
                                         ))}
+                                        {proj.tags.length > 3 && <span className="text-xs px-2 py-1 rounded bg-white/5 text-textSecondary border border-white/5">+{proj.tags.length - 3}</span>}
                                     </div>
                                 </motion.div>
                             ))}
                         </div>
                     </div>
+
+                    <AnimatePresence>
+                        {selected && (
+                            <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6">
+                                <motion.div 
+                                    initial={{ opacity: 0 }} 
+                                    animate={{ opacity: 1 }} 
+                                    exit={{ opacity: 0 }} 
+                                    className="absolute inset-0 bg-black/80 backdrop-blur-md"
+                                    onClick={() => setSelected(null)}
+                                />
+                                <motion.div 
+                                    initial={{ opacity: 0, scale: 0.95, y: 20 }} 
+                                    animate={{ opacity: 1, scale: 1, y: 0 }} 
+                                    exit={{ opacity: 0, scale: 0.95, y: 20 }}
+                                    transition={{ type: "spring", damping: 25, stiffness: 300 }}
+                                    className="relative w-full max-w-3xl max-h-[85vh] overflow-y-auto hide-scrollbar glass-panel rounded-3xl p-8 sm:p-12 shadow-2xl"
+                                >
+                                    <button 
+                                        onClick={() => setSelected(null)}
+                                        className="absolute top-6 right-6 p-2 rounded-full bg-white/5 hover:bg-white/10 text-white transition-colors"
+                                    >
+                                        <Icons.X />
+                                    </button>
+                                    
+                                    <div className="text-accent text-sm font-semibold tracking-wider uppercase mb-2">{selected.year}</div>
+                                    
+                                    <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 mb-8 pr-8">
+                                        <h2 className="text-3xl sm:text-4xl font-bold text-white leading-tight">{selected.title}</h2>
+                                        {selected.demoLink && (
+                                            <a 
+                                                href={selected.demoLink} 
+                                                target="_blank" 
+                                                rel="noopener noreferrer"
+                                                onClick={(e) => e.stopPropagation()}
+                                                className="shrink-0 flex items-center gap-2 px-4 py-2 rounded-xl bg-white text-black font-semibold hover:bg-gray-200 transition-all active:scale-95"
+                                            >
+                                                Live Demo <Icons.ExternalLink />
+                                            </a>
+                                        )}
+                                    </div>
+                                    
+                                    <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+                                        {selected.metrics.map(m => (
+                                            <div key={m.label} className="bg-white/5 border border-white/10 rounded-xl p-4">
+                                                <div className="text-2xl font-bold text-white mb-1">{m.value}</div>
+                                                <div className="text-xs text-textTertiary uppercase tracking-wider">{m.label}</div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                    
+                                    <div className="space-y-8 text-textSecondary leading-relaxed">
+                                        <div>
+                                            <h4 className="text-white font-semibold mb-3 flex items-center gap-2"><Icons.TerminalSquare /> Overview</h4>
+                                            <p>{selected.description}</p>
+                                        </div>
+                                        <div>
+                                            <h4 className="text-white font-semibold mb-3 flex items-center gap-2"><Icons.Code /> Technical Details</h4>
+                                            <p>{selected.details}</p>
+                                        </div>
+                                        <div>
+                                            <h4 className="text-white font-semibold mb-4 flex items-center gap-2"><Icons.Award /> Technologies</h4>
+                                            <div className="flex flex-wrap gap-2">
+                                                {selected.tags.map(tag => (
+                                                    <span key={tag} className="px-3 py-1.5 rounded-lg bg-white/10 border border-white/5 text-sm text-white">{tag}</span>
+                                                ))}
+                                            </div>
+                                        </div>
+                                        {selected.instructor && (
+                                            <div className="text-sm text-textTertiary pt-6 border-t border-white/5">
+                                                Instructor / Event: {selected.instructor}
+                                            </div>
+                                        )}
+                                    </div>
+                                </motion.div>
+                            </div>
+                        )}
+                    </AnimatePresence>
                 </section>
             );
         };
 
         const EducationAndAchievements = () => {
             return (
-                <section id="education" className="py-24 relative z-10 bg-black/20 border-y border-white/5">
-                    <div className="max-w-6xl mx-auto px-6">
-                        <div className="grid lg:grid-cols-2 gap-16">
-                            
-                            {/* Education */}
-                            <div>
-                                <SectionHeader title="Education" />
-                                <div className="space-y-4">
-                                    {CV_DATA.education.map((edu, index) => (
-                                        <motion.div 
-                                            key={index}
-                                            initial={{ opacity: 0, x: -20 }}
-                                            whileInView={{ opacity: 1, x: 0 }}
-                                            viewport={{ once: true }}
-                                            transition={{ duration: 0.5, delay: index * 0.1 }}
-                                            className="glass-panel p-5 rounded-xl flex flex-col md:flex-row md:items-center justify-between gap-4 group hover:bg-white/5 transition-colors"
-                                        >
-                                            <div>
-                                                <h4 className="text-white font-semibold text-lg">{edu.degree}</h4>
-                                                <p className="text-sm text-textSecondary mt-1">{edu.institution}</p>
-                                            </div>
-                                            <div className="flex md:flex-col items-center md:items-end justify-between md:justify-center gap-2 md:gap-1 shrink-0">
-                                                <span className="text-xs font-mono text-textTertiary">{edu.year}</span>
-                                            </div>
-                                        </motion.div>
-                                    ))}
-                                </div>
+                <section id="education" className="py-24 relative z-10">
+                    <div className="max-w-6xl mx-auto px-6 grid lg:grid-cols-2 gap-16">
+                        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
+                            <SectionHeader title="Education" />
+                            <div className="space-y-4">
+                                {CV_DATA.education.map(edu => (
+                                    <div key={edu.degree} className="premium-card p-6 rounded-2xl">
+                                        <h4 className="text-lg font-bold text-white mb-2">{edu.degree}</h4>
+                                        <div className="text-textSecondary text-sm mb-3">{edu.institution}</div>
+                                        <div className="inline-block px-2 py-1 rounded bg-white/5 border border-white/5 text-textTertiary text-xs">{edu.year}</div>
+                                    </div>
+                                ))}
                             </div>
-
-                            {/* Achievements */}
-                            <div>
-                                <SectionHeader title="Achievements" />
-                                <div className="space-y-4">
-                                    {CV_DATA.achievements.map((ach, index) => (
-                                        <motion.div 
-                                            key={index}
-                                            initial={{ opacity: 0, x: 20 }}
-                                            whileInView={{ opacity: 1, x: 0 }}
-                                            viewport={{ once: true }}
-                                            transition={{ duration: 0.5, delay: index * 0.1 }}
-                                            className="premium-card p-5 rounded-xl flex items-start gap-5 group"
-                                        >
-                                            <div className="shrink-0 w-16 text-center">
-                                                <div className="text-xl md:text-2xl font-bold text-white tracking-tighter group-hover:text-accent transition-colors">{ach.rank}</div>
-                                            </div>
-                                            <div className="w-px bg-white/10 self-stretch"></div>
-                                            <div>
-                                                <h4 className="text-white font-medium mb-1">{ach.title}</h4>
-                                                <p className="text-sm text-textTertiary">{ach.desc}</p>
-                                            </div>
-                                        </motion.div>
-                                    ))}
-                                </div>
+                        </motion.div>
+                        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }}>
+                            <SectionHeader title="Achievements" />
+                            <div className="space-y-4">
+                                {CV_DATA.achievements.map(ach => (
+                                    <div key={ach.title} className="premium-card p-6 rounded-2xl flex flex-col sm:flex-row sm:items-center gap-6">
+                                        <div className="flex-shrink-0 sm:w-28">
+                                            <div className="text-3xl font-bold text-white tracking-tighter">{ach.rank}</div>
+                                        </div>
+                                        <div>
+                                            <h4 className="text-base font-bold text-white mb-2">{ach.title}</h4>
+                                            <p className="text-textTertiary text-sm leading-relaxed">{ach.desc}</p>
+                                        </div>
+                                    </div>
+                                ))}
                             </div>
-
-                        </div>
+                        </motion.div>
                     </div>
                 </section>
             );
         };
 
         const Contact = () => {
-            const [copiedEmail, setCopiedEmail] = useState(false);
-            const [copiedPhone, setCopiedPhone] = useState(false);
-
-            const handleCopy = (text, type) => {
-                navigator.clipboard.writeText(text);
-                if (type === 'email') {
-                    setCopiedEmail(true);
-                    setTimeout(() => setCopiedEmail(false), 2000);
-                } else {
-                    setCopiedPhone(true);
-                    setTimeout(() => setCopiedPhone(false), 2000);
-                }
-            };
-
             return (
                 <section id="contact" className="py-32 relative z-10 text-center">
                     <div className="max-w-3xl mx-auto px-6">
@@ -932,20 +1057,20 @@
                             <p className="text-textSecondary mb-10 relative z-10">Economics · Data · Machine Learning · AI</p>
                             
                             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 relative z-10">
-                                <button 
-                                    onClick={() => handleCopy(CV_DATA.personal.email, 'email')}
+                                <a 
+                                    href={`mailto:${CV_DATA.personal.email}`}
                                     className="w-full sm:w-auto px-6 py-3 rounded-xl bg-white text-black font-semibold hover:bg-gray-200 transition-all active:scale-95 flex items-center justify-center gap-2 group"
                                 >
-                                    {copiedEmail ? <Icons.Check /> : <Icons.Mail />}
-                                    {copiedEmail ? "Copied ✓" : "Copy Email"}
-                                </button>
-                                <button 
-                                    onClick={() => handleCopy(CV_DATA.personal.phone, 'phone')}
+                                    <Icons.Mail />
+                                    Email Me
+                                </a>
+                                <a 
+                                    href={`tel:${CV_DATA.personal.phone.replace(/[^0-9+]/g, '')}`}
                                     className="w-full sm:w-auto px-6 py-3 rounded-xl bg-surface border border-white/10 text-white font-medium hover:bg-white/5 transition-all active:scale-95 flex items-center justify-center gap-2"
                                 >
-                                    {copiedPhone ? <Icons.Check /> : <Icons.Phone />}
-                                    {copiedPhone ? "Copied ✓" : "Copy Phone"}
-                                </button>
+                                    <Icons.Phone />
+                                    Call Me
+                                </a>
                             </div>
                         </motion.div>
                     </div>
@@ -957,13 +1082,13 @@
             <footer className="py-8 border-t border-white/5 relative z-10 text-center text-sm text-textTertiary">
                 <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
                     <div className="flex items-center gap-2 font-medium text-textSecondary">
-                        <div className="w-5 h-5 rounded-full bg-white/10 flex items-center justify-center text-[10px]">R</div>
+                        <AnimatedBoy />
                         Rahul Arya
                     </div>
                     <div className="flex gap-6">
                         <a href="#" className="hover:text-white transition-colors">LinkedIn</a>
                         <a href="#" className="hover:text-white transition-colors">GitHub</a>
-                        <a href="Rahul Arya.pdf" target="_blank" className="hover:text-white transition-colors">Resume</a>
+                        <a href="https://drive.google.com/file/d/18_KUEYu-EROBhBy8cNGaeHZW7e_tDOQo/view?usp=drive_link" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Resume</a>
                     </div>
                     <div>© {new Date().getFullYear()}</div>
                 </div>
